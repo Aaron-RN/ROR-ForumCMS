@@ -1,2 +1,24 @@
-# ROR-ForumCMS
-Front-end system built with React.js for user manageable Blog. Users will be able to create new posts, edit posts, remove posts, and pin posts through a Content Management System linked to a Ruby on Rails PostgreSQL database Back-end.
+# README
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
