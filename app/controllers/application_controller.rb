@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::API
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
 
   def generate_token(user_id, token_size = 32)
     random_ascii = [
