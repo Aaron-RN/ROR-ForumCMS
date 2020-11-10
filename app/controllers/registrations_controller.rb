@@ -3,6 +3,11 @@
 class RegistrationsController < ApplicationController
   def create
     user = User.create!(register_params)
+    new_activation_key = generate_token(user.id, 52)
+    user.update_attribute(:admin_level, 3) if User.all.size <= 1
+    if user.update_attribute(:activation_key, new_activation_key)
+      ActivationMailer.with(user: user).welcome_email.deliver_later
+    end
     json_response({ user: user }, :created)
   end
 

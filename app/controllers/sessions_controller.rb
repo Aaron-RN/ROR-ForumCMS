@@ -6,16 +6,14 @@ class SessionsController < ApplicationController
                .or(User.where(email: params['user']['email']))
                .first
 
-    if user
-      if user.try(:authenticate, params['user']['password'])
-        new_token = generate_token(user.id)
-        if user.update_attribute(:token, new_token)
-          json_response({ logged_in: true, user: user })
-        else
-          json_response({ error: user.errors.full_messages })
-        end
+    json_response({ error: 'Incorrect login credentials' }, 401) unless user
+
+    if user.try(:authenticate, params['user']['password'])
+      new_token = generate_token(user.id)
+      if user.update_attribute(:token, new_token)
+        json_response({ logged_in: true, user: user })
       else
-        json_response({ error: 'Incorrect login credentials' }, 401)
+        json_response({ error: user.errors.full_messages })
       end
     else
       json_response({ error: 'Incorrect login credentials' }, 401)
