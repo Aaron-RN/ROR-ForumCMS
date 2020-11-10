@@ -3,6 +3,11 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.action_cable.allowed_request_origins = [
+    'http://localhost:3000',
+    'https://arn-forum-cms.netlify.app'
+  ]
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

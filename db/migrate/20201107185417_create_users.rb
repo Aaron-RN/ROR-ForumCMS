@@ -6,7 +6,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :username
       t.string :password_digest
       t.string :email
-      t.boolean :activated, default: false
+      t.boolean :is_activated, default: false
       t.string :activation_key
       t.string :token
       t.integer :admin_level, default: 0

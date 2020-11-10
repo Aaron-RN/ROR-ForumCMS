@@ -17,6 +17,18 @@ class RegistrationsController < ApplicationController
     head :no_content
   end
 
+  def activate_account
+    user = User.find(params[:id])
+
+    if user.activation_key == params[:activation_key]
+      user.update_attribute(:activated, true)
+    end
+
+    json_response({ user: user })
+  end
+
+  private
+
   def register_params
     # whitelist params
     params.require(:user)
