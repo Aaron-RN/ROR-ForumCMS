@@ -55,11 +55,9 @@ class UsersController < ApplicationController
 
   # Returns a hash object of a user with their profile_image included
   def user_with_image(user)
-    user_with_attachment = { id: user.id, username: user.username,
-                             email: user.email, profile_image: nil,
-                             can_post_date: user.can_post_date,
-                             can_comment_date: user.can_comment_date,
-                             created_at: user.created_at }
+    user_with_attachment = user.attributes
+    user_with_attachment['profile_image'] = nil
+
     unless user.profile_image_attachment.nil?
       user_with_attachment['profile_image'] = url_for(user.profile_image)
     end
