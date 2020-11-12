@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   post '/registrations/:id/activate_account/:activation_key',
        to: 'registrations#activate_account'
 
+  resources :forums, only: %i[index show create edit destroy]
   resources :sign_up, only: %i[create], controller: 'registrations'
   resources :log_in, only: %i[create], controller: 'sessions'
   resources :users, only: %i[index show] do

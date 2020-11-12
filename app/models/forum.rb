@@ -15,4 +15,8 @@ class Forum < ApplicationRecord
       end
     end
   end
+
+  def subforum_posts(subforum)
+    posts.where('subforum =?', subforum)
+  end
 end
