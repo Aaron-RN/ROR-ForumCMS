@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  before_action :set_post, only: %i[show create update destroy]
+  before_action :set_post, only: %i[show create]
   before_action :set_comment, only: %i[show update destroy]
 
   def show
@@ -48,7 +48,7 @@ class CommentsController < ApplicationController
   end
 
   def suspended(date)
-    if date > Date.now
+    if date > DateTime.now
       json_response(errors:
                              ['Your communications are still suspended'])
       return true
