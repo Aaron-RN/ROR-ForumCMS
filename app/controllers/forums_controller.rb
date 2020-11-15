@@ -1,5 +1,5 @@
 class ForumsController < ApplicationController
-  before_action :set_forum, only: %i[show edit]
+  before_action :set_forum, only: %i[show update destroy]
 
   def index
     all_forums = []
@@ -22,12 +22,22 @@ class ForumsController < ApplicationController
   end
 
   def create
+    forum = Forum.create!(forum_params)
+    json_response(forum: forum)
   end
 
-  def edit
+  def update
+    # update = Forum.update(@forum.id, forum_params)
+    if @forum.update_attributes(forum_params)
+      json_response(forum: @forum)
+    else
+      json_response(errors: @forum.errors.full_messages)
+    end
   end
 
   def destroy
+    @forum.destroy
+    json_response(forum: @forum)
   end
 
   private
@@ -45,5 +55,10 @@ class ForumsController < ApplicationController
     end
 
     all_subforums
+  end
+
+  def forum_params
+    params.require(:forum)
+          .permit(:name, [subforums: []], :admin_only, :admin_view_only)
   end
 end

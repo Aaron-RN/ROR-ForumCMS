@@ -11,7 +11,8 @@ class Forum < ApplicationRecord
       trim_subforum = subforum.strip
 
       if trim_subforum.length < 3 || trim_subforum.length > 32
-        errors.add subforum, 'Length must be within the value of 3 and 32...'
+        errors
+          .add "(#{subforum})", 'Length must be within the value of 3 and 32...'
       end
     end
   end
