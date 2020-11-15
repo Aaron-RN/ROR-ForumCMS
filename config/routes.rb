@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'comments/show'
-  get 'comments/create'
-  get 'comments/update'
-  get 'comments/destroy'
   root 'users#index'
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
   post '/registrations/:id/activate_account/:activation_key',
        to: 'registrations#activate_account'
 
+  resources :comments, only: %i[show create update destroy]
   resources :posts, only: %i[show create update destroy] do
     member do
       patch :lock_post, to: 'posts#lock_post'
