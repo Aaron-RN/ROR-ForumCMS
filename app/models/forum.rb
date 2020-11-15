@@ -18,6 +18,6 @@ class Forum < ApplicationRecord
   end
 
   def subforum_posts(subforum)
-    posts.where('subforum =?', subforum)
+    posts.where(subforum: subforum)
   end
 end

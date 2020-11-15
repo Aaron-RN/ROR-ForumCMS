@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ForumsController < ApplicationController
   before_action :set_forum, only: %i[show update destroy]
 
@@ -28,7 +30,7 @@ class ForumsController < ApplicationController
 
   def update
     # update = Forum.update(@forum.id, forum_params)
-    if @forum.update_attributes(forum_params)
+    if @forum.update(forum_params)
       json_response(forum: @forum)
     else
       json_response(errors: @forum.errors.full_messages)
@@ -37,7 +39,7 @@ class ForumsController < ApplicationController
 
   def destroy
     @forum.destroy
-    json_response(forum: @forum)
+    json_response('Forum destroyed')
   end
 
   private

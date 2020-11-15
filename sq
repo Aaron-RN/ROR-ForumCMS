@@ -1,0 +1,280 @@
+[1mdiff --git a/app/controllers/forums_controller.rb b/app/controllers/forums_controller.rb[m
+[1mindex 8d85e7f..d869e47 100644[m
+[1m--- a/app/controllers/forums_controller.rb[m
+[1m+++ b/app/controllers/forums_controller.rb[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m# frozen_string_literal: true[m
+[32m+[m
+ class ForumsController < ApplicationController[m
+   before_action :set_forum, only: %i[show update destroy][m
+ [m
+[36m@@ -37,7 +39,7 @@[m [mclass ForumsController < ApplicationController[m
+ [m
+   def destroy[m
+     @forum.destroy[m
+[31m-    json_response(forum: @forum)[m
+[32m+[m[32m    json_response('Forum destroyed')[m
+   end[m
+ [m
+   private[m
+[1mdiff --git a/config/routes.rb b/config/routes.rb[m
+[1mindex 49aaa46..1b0bb3e 100644[m
+[1m--- a/config/routes.rb[m
+[1m+++ b/config/routes.rb[m
+[36m@@ -1,6 +1,9 @@[m
+ # frozen_string_literal: true[m
+ [m
+ Rails.application.routes.draw do[m
+[32m+[m[32m  get 'posts/show'[m
+[32m+[m[32m  get 'posts/update'[m
+[32m+[m[32m  get 'posts/destroy'[m
+   root 'users#index'[m
+   patch :logout, to: 'sessions#destroy'[m
+   get :logged_in, to: 'sessions#logged_in'[m
+[1mdiff --git a/db/migrate/20201110232850_create_active_storage_tables.active_storage.rb b/db/migrate/20201110232850_create_active_storage_tables.active_storage.rb[m
+[1mindex 0b2ce25..98317c9 100644[m
+[1m--- a/db/migrate/20201110232850_create_active_storage_tables.active_storage.rb[m
+[1m+++ b/db/migrate/20201110232850_create_active_storage_tables.active_storage.rb[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m# frozen_string_literal: true[m
+[32m+[m
+ # This migration comes from active_storage (originally 20170806125915)[m
+ class CreateActiveStorageTables < ActiveRecord::Migration[5.2][m
+   def change[m
+[36m@@ -10,7 +12,7 @@[m [mclass CreateActiveStorageTables < ActiveRecord::Migration[5.2][m
+       t.string   :checksum,   null: false[m
+       t.datetime :created_at, null: false[m
+ [m
+[31m-      t.index [ :key ], unique: true[m
+[32m+[m[32m      t.index [:key], unique: true[m
+     end[m
+ [m
+     create_table :active_storage_attachments do |t|[m
+[36m@@ -20,7 +22,7 @@[m [mclass CreateActiveStorageTables < ActiveRecord::Migration[5.2][m
+ [m
+       t.datetime :created_at, null: false[m
+ [m
+[31m-      t.index [ :record_type, :record_id, :name, :blob_id ], name: "index_active_storage_attachments_uniqueness", unique: true[m
+[32m+[m[32m      t.index %i[record_type record_id name blob_id], name: 'index_active_storage_attachments_uniqueness', unique: true[m
+       t.foreign_key :active_storage_blobs, column: :blob_id[m
+     end[m
+   end[m
+[1mdiff --git a/db/schema.rb b/db/schema.rb[m
+[1mindex df4f5bf..dd9e9eb 100644[m
+[1m--- a/db/schema.rb[m
+[1m+++ b/db/schema.rb[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m# frozen_string_literal: true[m
+[32m+[m
+ # This file is auto-generated from the current state of the database. Instead[m
+ # of editing this file, please use the migrations feature of Active Record to[m
+ # incrementally modify your database, and then regenerate this schema definition.[m
+[36m@@ -10,85 +12,84 @@[m
+ #[m
+ # It's strongly recommended that you check this file into your version control system.[m
+ [m
+[31m-ActiveRecord::Schema.define(version: 2020_11_10_232850) do[m
+[31m-[m
+[32m+[m[32mActiveRecord::Schema.define(version: 20_201_110_232_850) do[m
+   # These are extensions that must be enabled in order to support this database[m
+[31m-  enable_extension "plpgsql"[m
+[32m+[m[32m  enable_extension 'plpgsql'[m
+ [m
+[31m-  create_table "active_storage_attachments", force: :cascade do |t|[m
+[31m-    t.string "name", null: false[m
+[31m-    t.string "record_type", null: false[m
+[31m-    t.bigint "record_id", null: false[m
+[31m-    t.bigint "blob_id", null: false[m
+[31m-    t.datetime "created_at", null: false[m
+[31m-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"[m
+[31m-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true[m
+[32m+[m[32m  create_table 'active_storage_attachments', force: :cascade do |t|[m
+[32m+[m[32m    t.string 'name', null: false[m
+[32m+[m[32m    t.string 'record_type', null: false[m
+[32m+[m[32m    t.bigint 'record_id', null: false[m
+[32m+[m[32m    t.bigint 'blob_id', null: false[m
+[32m+[m[32m    t.datetime 'created_at', null: false[m
+[32m+[m[32m    t.index ['blob_id'], name: 'index_active_storage_attachments_on_blob_id'[m
+[32m+[m[32m    t.index %w[record_type record_id name blob_id], name: 'index_active_storage_attachments_uniqueness', unique: true[m
+   end[m
+ [m
+[31m-  create_table "active_storage_blobs", force: :cascade do |t|[m
+[31m-    t.string "key", null: false[m
+[31m-    t.string "filename", null: false[m
+[31m-    t.string "content_type"[m
+[31m-    t.text "metadata"[m
+[31m-    t.bigint "byte_size", null: false[m
+[31m-    t.string "checksum", null: false[m
+[31m-    t.datetime "created_at", null: false[m
+[31m-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true[m
+[32m+[m[32m  create_table 'active_storage_blobs', force: :cascade do |t|[m
+[32m+[m[32m    t.string 'key', null: false[m
+[32m+[m[32m    t.string 'filename', null: false[m
+[32m+[m[32m    t.string 'content_type'[m
+[32m+[m[32m    t.text 'metadata'[m
+[32m+[m[32m    t.bigint 'byte_size', null: false[m
+[32m+[m[32m    t.string 'checksum', null: false[m
+[32m+[m[32m    t.datetime 'created_at', null: false[m
+[32m+[m[32m    t.index ['key'], name: 'index_active_storage_blobs_on_key', unique: true[m
+   end[m
+ [m
+[31m-  create_table "comments", force: :cascade do |t|[m
+[31m-    t.text "body"[m
+[31m-    t.bigint "user_id", null: false[m
+[31m-    t.bigint "post_id", null: false[m
+[31m-    t.bigint "comment_id", null: false[m
+[31m-    t.datetime "created_at", precision: 6, null: false[m
+[31m-    t.datetime "updated_at", precision: 6, null: false[m
+[31m-    t.index ["comment_id"], name: "index_comments_on_comment_id"[m
+[31m-    t.index ["post_id"], name: "index_comments_on_post_id"[m
+[31m-    t.index ["user_id"], name: "index_comments_on_user_id"[m
+[32m+[m[32m  create_table 'comments', force: :cascade do |t|[m
+[32m+[m[32m    t.text 'body'[m
+[32m+[m[32m    t.bigint 'user_id', null: false[m
+[32m+[m[32m    t.bigint 'post_id', null: false[m
+[32m+[m[32m    t.bigint 'comment_id', null: false[m
+[32m+[m[32m    t.datetime 'created_at', precision: 6, null: false[m
+[32m+[m[32m    t.datetime 'updated_at', precision: 6, null: false[m
+[32m+[m[32m    t.index ['comment_id'], name: 'index_comments_on_comment_id'[m
+[32m+[m[32m    t.index ['post_id'], name: 'index_comments_on_post_id'[m
+[32m+[m[32m    t.index ['user_id'], name: 'index_comments_on_user_id'[m
+   end[m
+ [m
+[31m-  create_table "forums", force: :cascade do |t|[m
+[31m-    t.string "name"[m
+[31m-    t.string "subforums", default: [], array: true[m
+[31m-    t.boolean "admin_only", default: false[m
+[31m-    t.boolean "admin_only_view", default: false[m
+[31m-    t.datetime "created_at", precision: 6, null: false[m
+[31m-    t.datetime "updated_at", precision: 6, null: false[m
+[32m+[m[32m  create_table 'forums', force: :cascade do |t|[m
+[32m+[m[32m    t.string 'name'[m
+[32m+[m[32m    t.string 'subforums', default: [], array: true[m
+[32m+[m[32m    t.boolean 'admin_only', default: false[m
+[32m+[m[32m    t.boolean 'admin_only_view', default: false[m
+[32m+[m[32m    t.datetime 'created_at', precision: 6, null: false[m
+[32m+[m[32m    t.datetime 'updated_at', precision: 6, null: false[m
+   end[m
+ [m
+[31m-  create_table "posts", force: :cascade do |t|[m
+[31m-    t.string "title"[m
+[31m-    t.text "body"[m
+[31m-    t.bigint "forum_id", null: false[m
+[31m-    t.bigint "user_id", null: false[m
+[31m-    t.string "subforum"[m
+[31m-    t.boolean "is_pinned", default: false[m
+[31m-    t.boolean "is_locked", default: false[m
+[31m-    t.datetime "created_at", precision: 6, null: false[m
+[31m-    t.datetime "updated_at", precision: 6, null: false[m
+[31m-    t.index ["forum_id"], name: "index_posts_on_forum_id"[m
+[31m-    t.index ["user_id"], name: "index_posts_on_user_id"[m
+[32m+[m[32m  create_table 'posts', force: :cascade do |t|[m
+[32m+[m[32m    t.string 'title'[m
+[32m+[m[32m    t.text 'body'[m
+[32m+[m[32m    t.bigint 'forum_id', null: false[m
+[32m+[m[32m    t.bigint 'user_id', null: false[m
+[32m+[m[32m    t.string 'subforum'[m
+[32m+[m[32m    t.boolean 'is_pinned', default: false[m
+[32m+[m[32m    t.boolean 'is_locked', default: false[m
+[32m+[m[32m    t.datetime 'created_at', precision: 6, null: false[m
+[32m+[m[32m    t.datetime 'updated_at', precision: 6, null: false[m
+[32m+[m[32m    t.index ['forum_id'], name: 'index_posts_on_forum_id'[m
+[32m+[m[32m    t.index ['user_id'], name: 'index_posts_on_user_id'[m
+   end[m
+ [m
+[31m-  create_table "users", force: :cascade do |t|[m
+[31m-    t.string "username"[m
+[31m-    t.string "password_digest"[m
+[31m-    t.string "email"[m
+[31m-    t.boolean "is_activated", default: false[m
+[31m-    t.string "activation_key"[m
+[31m-    t.string "token"[m
+[31m-    t.integer "admin_level", default: 0[m
+[31m-    t.datetime "can_post_date", default: "2020-11-10 16:09:04"[m
+[31m-    t.datetime "can_comment_date", default: "2020-11-10 16:09:04"[m
+[31m-    t.datetime "created_at", precision: 6, null: false[m
+[31m-    t.datetime "updated_at", precision: 6, null: false[m
+[32m+[m[32m  create_table 'users', force: :cascade do |t|[m
+[32m+[m[32m    t.string 'username'[m
+[32m+[m[32m    t.string 'password_digest'[m
+[32m+[m[32m    t.string 'email'[m
+[32m+[m[32m    t.boolean 'is_activated', default: false[m
+[32m+[m[32m    t.string 'activation_key'[m
+[32m+[m[32m    t.string 'token'[m
+[32m+[m[32m    t.integer 'admin_level', default: 0[m
+[32m+[m[32m    t.datetime 'can_post_date', default: '2020-11-10 16:09:04'[m
+[32m+[m[32m    t.datetime 'can_comment_date', default: '2020-11-10 16:09:04'[m
+[32m+[m[32m    t.datetime 'created_at', precision: 6, null: false[m
+[32m+[m[32m    t.datetime 'updated_at', precision: 6, null: false[m
+   end[m
+ [m
+[31m-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"[m
+[31m-  add_foreign_key "comments", "comments"[m
+[31m-  add_foreign_key "comments", "posts"[m
+[31m-  add_foreign_key "comments", "users"[m
+[31m-  add_foreign_key "posts", "forums"[m
+[31m-  add_foreign_key "posts", "users"[m
+[32m+[m[32m  add_foreign_key 'active_storage_attachments', 'active_storage_blobs', column: 'blob_id'[m
+[32m+[m[32m  add_foreign_key 'comments', 'comments'[m
+[32m+[m[32m  add_foreign_key 'comments', 'posts'[m
+[32m+[m[32m  add_foreign_key 'comments', 'users'[m
+[32m+[m[32m  add_foreign_key 'posts', 'forums'[m
+[32m+[m[32m  add_foreign_key 'posts', 'users'[m
+ end[m
+[1mdiff --git a/spec/controllers/forums_controller_spec.rb b/spec/controllers/forums_controller_spec.rb[m
+[1mindex 7186015..152d566 100644[m
+[1m--- a/spec/controllers/forums_controller_spec.rb[m
+[1m+++ b/spec/controllers/forums_controller_spec.rb[m
+[36m@@ -1,40 +1,40 @@[m
+[32m+[m[32m# frozen_string_literal: true[m
+[32m+[m
+ require 'rails_helper'[m
+ [m
+ RSpec.describe ForumsController, type: :controller do[m
+[31m-[m
+[31m-  describe "GET #index" do[m
+[31m-    it "returns http success" do[m
+[32m+[m[32m  describe 'GET #index' do[m
+[32m+[m[32m    it 'returns http success' do[m
+       get :index[m
+       expect(response).to have_http_status(:success)[m
+     end[m
+   end[m
+ [m
+[31m-  describe "GET #show" do[m
+[31m-    it "returns http success" do[m
+[32m+[m[32m  describe 'GET #show' do[m
+[32m+[m[32m    it 'returns http success' do[m
+       get :show[m
+       expect(response).to have_http_status(:success)[m
+     end[m
+   end[m
+ [m
+[31m-  describe "GET #create" do[m
+[31m-    it "returns http success" do[m
+[32m+[m[32m  describe 'GET #create' do[m
+[32m+[m[32m    it 'returns http success' do[m
+       get :create[m
+       expect(response).to have_http_status(:success)[m
+     end[m
+   end[m
+ [m
+[31m-  describe "GET #edit" do[m
+[31m-    it "returns http success" do[m
+[32m+[m[32m  describe 'GET #edit' do[m
+[32m+[m[32m    it 'returns http success' do[m
+       get :edit[m
+       expect(response).to have_http_status(:success)[m
+     end[m
+   end[m
+ [m
+[31m-  describe "GET #destroy" do[m
+[31m-    it "returns http success" do[m
+[32m+[m[32m  describe 'GET #destroy' do[m
+[32m+[m[32m    it 'returns http success' do[m
+       get :destroy[m
+       expect(response).to have_http_status(:success)[m
+     end[m
+   end[m
+[31m-[m
+ end[m
