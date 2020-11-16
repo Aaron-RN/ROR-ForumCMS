@@ -49,8 +49,8 @@ class CommentsController < ApplicationController
 
   def suspended(date)
     if date > DateTime.now
-      json_response(errors:
-                             ['Your communications are still suspended'])
+      json_response(errors: ['Your commenting communications
+                              are still suspended'])
       return true
     end
 

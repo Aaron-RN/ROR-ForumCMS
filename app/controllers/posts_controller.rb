@@ -9,6 +9,8 @@ class PostsController < ApplicationController
 
   def create
     user = User.find(params[:post][:user_id])
+    return if suspended(user.can_post_date)
+
     post = user.posts.build(post_params)
     if post.save
       json_response(post: post)
@@ -55,5 +57,14 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:title, :body, :subforum, :is_pinned,
                                  :is_locked, :forum_id)
+  end
+
+  def suspended(date)
+    if date > DateTime.now
+      json_response(errors: ['Your posting communications are still suspended'])
+      return true
+    end
+
+    false
   end
 end
