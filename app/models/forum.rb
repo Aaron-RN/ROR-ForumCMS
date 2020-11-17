@@ -19,10 +19,9 @@ class Forum < ApplicationRecord
 
   # Grabs all posts by subforum, while also limiting the amount posts retrieved
   def subforum_posts(subforum, per_page = 10, page = 1)
-    range_begin = (page * per_page) - (per_page - 1)
-    range_end = page * per_page
-    posts_range = range_begin..range_end
-    retrieved_posts = posts.where(subforum: subforum, id: posts_range)
+    offset = (page * per_page) - per_page
+    retrieved_posts = posts.where(subforum: subforum)
+                           .offset(offset).limit(per_page)
 
     truncate_posts(retrieved_posts)
   end
