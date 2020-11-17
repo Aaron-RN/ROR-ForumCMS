@@ -2,27 +2,25 @@
 
 class ForumsController < ApplicationController
   before_action :set_forum, only: %i[show update destroy]
+  before_action :set_page_params, only: %i[index show]
 
   def index
-    per_page = params[:forum][:per_page]
-    page = params[:forum][:page]
     all_forums = []
     Forum.all.each do |forum|
       new_forum = forum.attributes
-      new_forum['posts'] = forum.subforum_posts(nil, per_page, page)
-      new_forum['subforums'] = return_subforums(forum, per_page, page)
+      new_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
+      new_forum['subforums'] = return_subforums(forum, @per_page, @page)
       all_forums.push new_forum
     end
 
-    json_response(forums: all_forums)
+    json_response(results: { forums: all_forums,
+                             per_page: per_page, page: page })
   end
 
   def show
-    per_page = params[:forum][:per_page]
-    page = params[:forum][:page]
     selected_forum = @forum.attributes
-    new_forum['posts'] = forum.subforum_posts(nil, per_page, page)
-    selected_forum['subforums'] = return_subforums(@forum, per_page, page)
+    new_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
+    selected_forum['subforums'] = return_subforums(@forum, @per_page, @page)
 
     json_response(forum: selected_forum)
   end
@@ -50,6 +48,11 @@ class ForumsController < ApplicationController
 
   def set_forum
     @forum = Forum.find(params[:id])
+  end
+
+  def set_page_params
+    @per_page = params[:forum][:per_page]
+    @page = params[:forum][:page]
   end
 
   def return_subforums(forum, per_page, page)
