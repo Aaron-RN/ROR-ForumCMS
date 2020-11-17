@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
     return unless user
 
     user.update(token: nil)
-    json_response({ logged_out: false })
+    json_response(user: { logged_in: false })
   end
 
   # Checks if a user is still logged in
@@ -39,7 +39,9 @@ class SessionsController < ApplicationController
 
     user = User.where(token: params['token']).first
     if user
-      user_with_status = user.attributes
+      user_with_status = user.to_json(only: %i[username is_activated
+                                               token admin_level can_post_date
+                                               can_comment_date])
       user_with_status['logged_in'] = true
       json_response(user: user_with_status)
     else json_response(user: { logged_in: false })

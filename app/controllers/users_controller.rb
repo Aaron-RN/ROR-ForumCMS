@@ -55,7 +55,9 @@ class UsersController < ApplicationController
 
   # Returns a hash object of a user with their profile_image included
   def user_with_image(user)
-    user_with_attachment = user.attributes
+    user_with_attachment = user.to_json(only: %i[username is_activated
+                                                 token admin_level can_post_date
+                                                 can_comment_date])
     user_with_attachment['profile_image'] = nil
 
     unless user.profile_image_attachment.nil?
