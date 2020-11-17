@@ -33,7 +33,7 @@ class Forum < ApplicationRecord
   def truncate_posts(posts)
     returned_posts = []
     posts.each do |post|
-      new_post = post.to_json(only: %i[user_id is_pinned created_at])
+      new_post = post.as_json(only: %i[user_id is_pinned created_at])
       new_post['title'] = post.title.slice(0..30)
       new_post['body'] = post.body.slice(0..32)
       returned_posts.push(new_post)

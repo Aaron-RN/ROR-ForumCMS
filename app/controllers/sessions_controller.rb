@@ -39,7 +39,7 @@ class SessionsController < ApplicationController
 
     user = User.where(token: params['token']).first
     if user
-      user_with_status = user.to_json(only: %i[username is_activated
+      user_with_status = user.as_json(only: %i[username is_activated
                                                token admin_level can_post_date
                                                can_comment_date])
       user_with_status['logged_in'] = true
