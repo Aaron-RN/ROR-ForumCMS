@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  include IsActivated
-
   # When a user logs in
   def create
     user = User.where(username: params['user']['username'])
@@ -12,16 +10,7 @@ class SessionsController < ApplicationController
     json_response({ errors: 'Incorrect login credentials' }, 401) unless user
     return unless activated(user)
 
-    if user.try(:authenticate, params['user']['password'])
-      new_token = generate_token(user.id)
-      if user.update_attribute(:token, new_token)
-        json_response({ logged_in: true, user: user })
-      else
-        json_response({ errors: user.errors.full_messages })
-      end
-    else
-      json_response({ errors: 'Incorrect login credentials' }, 401)
-    end
+    authenticate_user(user)
   end
 
   # When a user logs out
@@ -46,5 +35,29 @@ class SessionsController < ApplicationController
       json_response(user: user_with_status)
     else json_response(user: { logged_in: false })
     end
+  end
+
+  private
+
+  def authenticate_user(user)
+    if user.try(:authenticate, params['user']['password'])
+      new_token = generate_token(user.id)
+      if user.update_attribute(:token, new_token)
+        json_response({ logged_in: true, user: user })
+      else
+        json_response({ errors: user.errors.full_messages })
+      end
+    else
+      json_response({ errors: 'Incorrect login credentials' }, 401)
+    end
+  end
+
+  def activated(user)
+    unless user.is_activated
+      json_response({ errors: ['Account not activated'] }, 401)
+      return false
+    end
+
+    true
   end
 end
