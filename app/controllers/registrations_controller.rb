@@ -33,6 +33,6 @@ class RegistrationsController < ApplicationController
   def register_params
     # whitelist params
     params.require(:user)
-          .permit(:username, :email, :password, :password_confirm)
+          .permit(:username, :email, :password, :password_confirmation)
   end
 end
