@@ -28,22 +28,27 @@ class SessionsController < ApplicationController
 
     user = User.where(token: params['token']).first
     if user
-      user_with_status = user.as_json(only: %i[username is_activated
-                                               token admin_level can_post_date
-                                               can_comment_date])
-      user_with_status['logged_in'] = true
-      json_response(user: user_with_status)
+      json_response(user: user_status(user))
     else json_response(user: { logged_in: false })
     end
   end
 
   private
 
+  def user_status(user)
+    user_with_status = user.as_json(only: %i[username is_activated
+                                             token admin_level can_post_date
+                                             can_comment_date])
+    user_with_status['logged_in'] = true
+
+    user_with_status
+  end
+
   def authenticate_user(user)
     if user.try(:authenticate, params['user']['password'])
       new_token = generate_token(user.id)
       if user.update_attribute(:token, new_token)
-        json_response({ logged_in: true, user: user })
+        json_response(user: user_status(user))
       else
         json_response({ errors: user.errors.full_messages })
       end
