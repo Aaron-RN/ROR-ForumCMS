@@ -8,7 +8,7 @@ class RegistrationsController < ApplicationController
     if user.update_attribute(:activation_key, new_activation_key)
       ActivationMailer.with(user: user).welcome_email.deliver_later
     end
-    json_response({ user: user }, :created)
+    json_response('Account registered but activation required', :created)
   end
 
   def destroy
@@ -24,7 +24,7 @@ class RegistrationsController < ApplicationController
       user.update_attribute(:activated, true)
     end
 
-    json_response({ user: user })
+    json_response('Successfully activated account')
   end
 
   private
