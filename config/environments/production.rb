@@ -8,6 +8,9 @@ Rails.application.configure do
     'https://arn-forum-cms.netlify.app'
   ]
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { host: "https://arn-forum-api.herokuapp.com" }
+  
   # Code is not reloaded between requests.
   config.cache_classes = true
 
