@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
   get '/registrations/:id/activate_account',
-      to: 'registrations#activate_account'
+      to: 'registrations#activate_account',
+      as: 'activate_account'
 
   resources :comments, only: %i[show create update destroy]
   resources :posts, only: %i[show create update destroy] do
