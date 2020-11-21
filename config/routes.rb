@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   root 'users#index'
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
-  post '/registrations/:id/activate_account',
-       to: 'registrations#activate_account'
+  get '/registrations/:id/activate_account',
+      to: 'registrations#activate_account'
 
   resources :comments, only: %i[show create update destroy]
   resources :posts, only: %i[show create update destroy] do
