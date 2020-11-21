@@ -5,7 +5,15 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show set_admin_level suspend_communication]
 
   def index
-    json_response(users: User.all)
+    all_users = User.all
+    users_array = []
+    all_users.each do |user|
+      users_array.push(user.as_json(only: %i[username is_activated
+                                             token admin_level can_post_date
+                                             can_comment_date]))
+    end
+
+    json_response(users: users_array)
   end
 
   def show
