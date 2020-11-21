@@ -9,7 +9,7 @@
       You have successfully signed up but you need to activate your account.<br>
     </p>
     <p>
-      To activate your account and login to the site, just follow this link: <%= @url %>.
+      To activate your account and login to the site, just follow this link: <%= link_to "Confirmation link", @url, method: :post %>.
     </p>
     <p>Thanks for joining and have a great day!</p>
   </body>
