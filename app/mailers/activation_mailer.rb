@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ActivationMailer < ApplicationMailer
-  default from: 'notifications@example.com'
+  default from: 'forumCMS@notifications.com'
 
   def welcome_email
     site = 'arn-forum-cms.herokuapp.com'
