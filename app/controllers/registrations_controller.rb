@@ -22,7 +22,7 @@ class RegistrationsController < ApplicationController
     user = User.find(params[:id])
 
     if user.activation_key == params[:activation_key]
-      user.update_attribute(:activated, true)
+      user.update_attribute(:is_activated, true)
     end
 
     json_response(message: 'Successfully activated account')
