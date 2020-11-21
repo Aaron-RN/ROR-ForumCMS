@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'users#index'
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
-  get '/registrations/:id/activate_account',
+  get '/activate_account',
       to: 'registrations#activate_account',
       as: 'activate_account'
 
