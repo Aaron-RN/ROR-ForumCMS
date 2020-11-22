@@ -67,6 +67,8 @@ class UsersController < ApplicationController
                                                  token admin_level can_post_date
                                                  can_comment_date])
     user_with_attachment['profile_image'] = nil
+    user_with_attachment['posts'] = user.posts
+    user_with_attachment['comments'] = user.comments.last(3)
 
     unless user.profile_image_attachment.nil?
       user_with_attachment['profile_image'] = url_for(user.profile_image)
