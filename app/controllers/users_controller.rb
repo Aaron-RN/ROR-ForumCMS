@@ -8,9 +8,7 @@ class UsersController < ApplicationController
     all_users = User.all
     users_array = []
     all_users.each do |user|
-      users_array.push(user.as_json(only: %i[id username is_activated
-                                             token admin_level can_post_date
-                                             can_comment_date]))
+      users_array.push(user_with_image(user))
     end
 
     json_response(users: users_array)
@@ -69,6 +67,8 @@ class UsersController < ApplicationController
     user_with_attachment['profile_image'] = nil
     user_with_attachment['posts'] = user.posts
     user_with_attachment['comments'] = user.comments.last(3)
+    user_with_attachment['can_post'] = DateTime.now > user.can_post_date
+    user_with_attachment['can_comment'] = DateTime.now > user.can_comment_date
 
     unless user.profile_image_attachment.nil?
       user_with_attachment['profile_image'] = url_for(user.profile_image)
