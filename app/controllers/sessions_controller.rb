@@ -40,6 +40,8 @@ class SessionsController < ApplicationController
                                              token admin_level can_post_date
                                              can_comment_date])
     user_with_status['logged_in'] = true
+    user_with_status['can_post'] = DateTime.now > user.can_post_date
+    user_with_status['can_comment'] = DateTime.now > user.can_comment_date
 
     user_with_status
   end
