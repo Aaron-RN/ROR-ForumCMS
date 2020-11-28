@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   resources :forums, only: %i[index create update destroy] do
     collection do
       get '/all', to: 'forums#index_all'
-      get '/:forum/:subforum', to: 'forums#show'
+      get '/:forum', to: 'forums#show_by_forum'
+      get '/:forum/:subforum', to: 'forums#show_by_subforum'
     end
   end
   resources :sign_up, only: %i[create], controller: 'registrations'

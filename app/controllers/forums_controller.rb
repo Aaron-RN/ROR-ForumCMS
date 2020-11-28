@@ -21,19 +21,25 @@ class ForumsController < ApplicationController
     json_response(forums: Forum.all)
   end
 
-  def show
+  def show_by_forum
     forum = Forum.find_by(name: params[:forum])
     selected_forum = forum.attributes
-    if params[:subforum].present?
-      subforum = params[:subforum]
-      selected_forum['posts'] = []
-      new_subforum = { subforum: subforum,
-                       posts: forum.subforum_posts(subforum, @per_page, @page) }
-      selected_forum['subforums'] = new_subforum
-    else
-      selected_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
-      selected_forum['subforums'] = return_subforums(forum, @per_page, @page)
-    end
+    selected_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
+    selected_forum['subforums'] = return_subforums(forum, @per_page, @page)
+
+    json_response(results: { forum: selected_forum,
+                             per_page: @per_page, page: @page })
+  end
+
+  def show_by_subforum
+    forum = Forum.find_by(name: params[:forum])
+    selected_forum = forum.attributes
+
+    subforum = params[:subforum]
+    selected_forum['posts'] = []
+    new_subforum = { subforum: subforum,
+                     posts: forum.subforum_posts(subforum, @per_page, @page) }
+    selected_forum['subforums'] = new_subforum
 
     json_response(results: { forum: selected_forum,
                              per_page: @per_page, page: @page })
