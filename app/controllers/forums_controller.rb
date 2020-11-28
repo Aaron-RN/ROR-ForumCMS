@@ -51,8 +51,8 @@ class ForumsController < ApplicationController
   end
 
   def set_page_params
-    @per_page = params[:forum][:per_page] if params[:forum][:per_page]
-    @page = params[:forum][:page] if params[:forum][:page]
+    @per_page = params[:forum][:per_page].present? ? params[:forum][:per_page] : 5
+    @page = params[:forum][:page].present? ? params[:forum][:page] : 1
   end
 
   def return_subforums(forum, per_page, page)
