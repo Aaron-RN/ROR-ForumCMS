@@ -2,7 +2,7 @@
 
 class ForumsController < ApplicationController
   before_action :set_forum, only: %i[update destroy]
-  before_action :set_page_params, only: %i[index show]
+  before_action :set_page_params, only: %i[index show_by_forum, show_by_subforum]
 
   def index
     all_forums = []
