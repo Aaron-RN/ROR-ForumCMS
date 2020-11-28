@@ -14,7 +14,7 @@ class ForumsController < ApplicationController
     end
 
     json_response(results: { forums: all_forums, pinned_posts: Post.pins,
-                             per_page: per_page, page: page })
+                             per_page: @per_page, page: @page })
   end
 
   def show
