@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ForumsController < ApplicationController
-  before_action :set_forum, only: %i[show update destroy]
+  before_action :set_forum, only: %i[update destroy]
   before_action :set_page_params, only: %i[index show]
 
   def index
@@ -18,9 +18,10 @@ class ForumsController < ApplicationController
   end
 
   def show
-    selected_forum = @forum.attributes
+    forum = Forum.find_by(name: params[:name])
+    selected_forum = forum.attributes
     new_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
-    selected_forum['subforums'] = return_subforums(@forum, @per_page, @page)
+    selected_forum['subforums'] = return_subforums(forum, @per_page, @page)
 
     json_response(forum: selected_forum)
   end

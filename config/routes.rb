@@ -15,7 +15,11 @@ Rails.application.routes.draw do
       patch :pin_post, to: 'posts#pin_post'
     end
   end
-  resources :forums, only: %i[index show create update destroy]
+  resources :forums, only: %i[index create update destroy] do
+    collection do
+      get '/:name', to: 'forums#show'
+    end
+  end
   resources :sign_up, only: %i[create], controller: 'registrations'
   resources :log_in, only: %i[create], controller: 'sessions'
   resources :users, only: %i[index show] do
