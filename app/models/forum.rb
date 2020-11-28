@@ -9,9 +9,10 @@ class Forum < ApplicationRecord
 
   def subforums_check
     subforums.each do |subforum|
-      trim_subforum = subforum.strip
+      subforum.downcase!
+      subforum.strip!
 
-      if trim_subforum.length < 3 || trim_subforum.length > 32
+      if subforum.length < 3 || subforum.length > 32
         errors
           .add "(#{subforum})", 'Length must be within the value of 3 and 32...'
       end
