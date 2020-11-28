@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
   resources :forums, only: %i[index create update destroy] do
     collection do
-      get '/:name', to: 'forums#show'
+      get '/:forum/:subforum', to: 'forums#show'
     end
   end
   resources :sign_up, only: %i[create], controller: 'registrations'
