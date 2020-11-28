@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   end
   resources :forums, only: %i[index create update destroy] do
     collection do
+      get '/all', to: 'forums#index_all'
       get '/:forum/:subforum', to: 'forums#show'
     end
   end

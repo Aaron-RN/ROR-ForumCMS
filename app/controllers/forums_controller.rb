@@ -17,6 +17,10 @@ class ForumsController < ApplicationController
                              per_page: @per_page, page: @page })
   end
 
+  def index_all
+    json_response(forums: Forum.all)
+  end
+
   def show
     forum = Forum.find_by(name: params[:forum])
     selected_forum = forum.attributes
@@ -36,14 +40,14 @@ class ForumsController < ApplicationController
   end
 
   def create
-    forum = Forum.create!(forum_params)
-    json_response(forum: forum)
+    Forum.create!(forum_params)
+    json_response(forums: Forum.all)
   end
 
   def update
     # update = Forum.update(@forum.id, forum_params)
     if @forum.update(forum_params)
-      json_response(forum: @forum)
+      json_response(forums: Forum.all)
     else
       json_response(errors: @forum.errors.full_messages)
     end
@@ -51,7 +55,7 @@ class ForumsController < ApplicationController
 
   def destroy
     @forum.destroy
-    json_response('Forum destroyed')
+    json_response('Forum destroyed successfully')
   end
 
   private
@@ -78,6 +82,6 @@ class ForumsController < ApplicationController
 
   def forum_params
     params.require(:forum)
-          .permit(:name, [subforums: []], :admin_only, :admin_view_only)
+          .permit(:name, [subforums: []], :admin_only, :admin_only_view)
   end
 end
