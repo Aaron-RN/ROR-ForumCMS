@@ -5,6 +5,7 @@ class Forum < ApplicationRecord
   validates :name, length: { in: 3..32 }, presence: true,
                    uniqueness: { case_sensitive: false }
   validate :subforums_check
+  before_save { name.downcase! }
 
   def subforums_check
     subforums.each do |subforum|
