@@ -55,7 +55,7 @@ class ForumsController < ApplicationController
 
   def destroy
     @forum.destroy
-    json_response('Forum destroyed successfully')
+    json_response(forums: Forum.all)
   end
 
   private
