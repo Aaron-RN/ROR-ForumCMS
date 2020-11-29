@@ -37,6 +37,7 @@ class Forum < ApplicationRecord
       new_post = post.as_json(only: %i[user_id is_pinned created_at])
       new_post['title'] = post.title.slice(0..30)
       new_post['body'] = post.body.slice(0..32)
+      new_post['author'] = post.author.username
       returned_posts.push(new_post)
     end
 
