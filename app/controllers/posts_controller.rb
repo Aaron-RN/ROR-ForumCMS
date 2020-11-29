@@ -62,6 +62,7 @@ class PostsController < ApplicationController
   def post_json(post)
     new_post = post.attributes
     new_post['author'] = post.author.username
+    new_post['forum'] = post.forum.name
     new_post
   end
 
