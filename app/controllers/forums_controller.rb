@@ -39,7 +39,7 @@ class ForumsController < ApplicationController
     selected_forum['posts'] = []
     new_subforum = { subforum: subforum,
                      posts: forum.subforum_posts(subforum, @per_page, @page) }
-    selected_forum['subforums'] = new_subforum
+    selected_forum['subforums'] = [new_subforum]
 
     json_response(results: { forum: selected_forum,
                              per_page: @per_page, page: @page })
