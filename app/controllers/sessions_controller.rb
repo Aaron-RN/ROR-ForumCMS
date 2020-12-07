@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
                .or(User.where(email: params['user']['email']))
                .first
 
-    json_response({ errors: 'Incorrect login credentials' }, 401) unless user
+    return json_response({ errors: 'Incorrect login credentials' }, 401) unless user
     return unless activated(user)
 
     authenticate_user(user)
