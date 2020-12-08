@@ -16,4 +16,15 @@ class Post < ApplicationRecord
     new_post['forum'] = forum.name
     new_post
   end
+  
+  def self.pins_json
+    results = []
+    all_pins = Post.pins
+    all_pins.each do |p|
+      new_post = p.post_json
+      results.push(new_post)
+    end
+    
+    results
+  end
 end
