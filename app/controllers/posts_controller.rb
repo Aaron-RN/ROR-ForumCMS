@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show update destroy lock_post pin_post]
 
   def show
-    json_response({ post: post_json(@post), comments: @post.comments })
+    json_response({ post: @post.post_json, comments: @post.comments })
   end
 
   def create
@@ -13,7 +13,7 @@ class PostsController < ApplicationController
 
     post = user.posts.build(post_params)
     if post.save
-      json_response(post: post_json(post))
+      json_response(post: @post.post_json)
     else
       json_response(errors: post.errors.full_messages)
     end
@@ -21,7 +21,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      json_response(post: post_json(@post))
+      json_response(post: @post.post_json)
     else
       json_response(errors: @post.errors.full_messages)
     end
@@ -34,7 +34,7 @@ class PostsController < ApplicationController
 
   def lock_post
     if @post.update(is_locked: !@post.is_locked)
-      json_response(post: post_json(@post))
+      json_response(post: @post.post_json)
     else
       json_response(errors: @post.errors.full_messages)
     end
@@ -42,7 +42,7 @@ class PostsController < ApplicationController
 
   def pin_post
     if @post.update(is_pinned: !@post.is_pinned)
-      json_response(post: post_json(@post))
+      json_response(post: @post.post_json)
     else
       json_response(errors: @post.errors.full_messages)
     end
@@ -57,13 +57,6 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:title, :body, :subforum, :is_pinned,
                                  :is_locked, :forum_id)
-  end
-  
-  def post_json(post)
-    new_post = post.attributes
-    new_post['author'] = post.author.username
-    new_post['forum'] = post.forum.name
-    new_post
   end
 
   def suspended(date)
