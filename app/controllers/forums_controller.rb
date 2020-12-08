@@ -13,7 +13,7 @@ class ForumsController < ApplicationController
       all_forums.push new_forum
     end
 
-    json_response(results: { forums: all_forums, pinned_posts: Post.pins,
+    json_response(results: { forums: all_forums, pinned_posts: Post.pins_json,
                              per_page: @per_page, page: @page })
   end
 
