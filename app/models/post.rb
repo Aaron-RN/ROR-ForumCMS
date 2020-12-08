@@ -9,4 +9,11 @@ class Post < ApplicationRecord
   validates :subforum, length: { in: 3..48 }, allow_nil: true
   scope :pins, -> { where('is_pinned = true') }
   scope :not_pinned, -> { where('is_pinned = false') }
+  
+  def post_json
+    new_post = attributes
+    new_post['author'] = author.username
+    new_post['forum'] = forum.name
+    new_post
+  end
 end
