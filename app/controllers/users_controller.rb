@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 
     return json_response({ errors: error_desc2 }, 401) if @user.admin_level == 3
 
-    @user.update(admin_level: params[:user][:admin_level])
+    @user.update_attribute(admin_level, params[:user][:admin_level])
     json_response(user: user_with_image(@user))
   end
 
