@@ -11,10 +11,24 @@ class Post < ApplicationRecord
   scope :not_pinned, -> { where('is_pinned = false') }
   
   def post_json
-    new_post = attributes
-    new_post['author'] = author.username
-    new_post['forum'] = forum.name
-    new_post
+    if self.is_a? Array
+      returned_posts = []
+      postsArray.each do |post|
+        new_post = post.as_json(only: %i[id user_id is_pinned subforum created_at])
+        new_post['title'] = post.title.slice(0..30)
+        new_post['body'] = post.body.slice(0..32)
+        new_post['author'] = post.author.username
+        new_post['forum'] = post.forum.name
+        returned_posts.push(new_post)
+      end
+
+      return returned_posts
+    else
+      new_post = attributes
+      new_post['author'] = author.username
+      new_post['forum'] = forum.name
+      new_post
+    end
   end
   
   def self.pins_json
