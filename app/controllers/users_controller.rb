@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     suspend_comms(@user, post_ban, :can_post_date)
     suspend_comms(@user, comment_ban, :can_comment_date)
 
-    json_response(user: @user)
+    json_response(user: user_with_image(@user))
   end
 
   private
@@ -59,7 +59,8 @@ class UsersController < ApplicationController
     return unless comms.nil?
     return unless comms.is_a?(Array)
 
-    ban_date = DateTime.new(comms[0], comms[1], comms[2], comms[3], comms[4]);
+    comms_i = comms.map(&:to_i)
+    ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4]);
     user.update_attribute(attr, ban_date)
   end
 
