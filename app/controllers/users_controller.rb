@@ -56,7 +56,10 @@ class UsersController < ApplicationController
   end
 
   def suspend_comms(user, comms, attr)
-    user.update_attribute(attr, comms) unless comms.nil?
+    return unless comms.nil? && comms.is_a? Array
+
+    ban_date = DateTime.new(comms[0], comms[1], comms[2], comms[3], comms[4]);
+    user.update_attribute(attr, ban_date)
   end
 
   # Returns a hash object of a user with their profile_image included
