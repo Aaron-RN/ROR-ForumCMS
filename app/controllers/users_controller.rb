@@ -57,12 +57,11 @@ class UsersController < ApplicationController
 
   def suspend_comms(user, comms, attr)
     return unless comms.nil?
+    puts comms
     return unless comms.is_a?(Array)
 
     comms_i = comms.map(&:to_i)
-    puts comms_i
-    ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4], 0);
-    puts ban_date
+    ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4]);
     user.update_attribute(attr, ban_date)
   end
 
