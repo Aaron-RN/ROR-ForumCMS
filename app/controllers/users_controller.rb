@@ -33,14 +33,16 @@ class UsersController < ApplicationController
 
   def suspend_communication
     error_desc = 'You do not have the necessary privileges'
+    error_desc2 = 'Ban dates cannot be blank'
+    error_desc3 = 'Ban dates must be in array format'
 
     return json_response({ errors: error_desc }, 401) if @admin.admin_level < 1
 
     post_ban = params[:user][:can_post_date]
     comment_ban = params[:user][:can_comment_date]
 
-    return unless post_ban.nil? || comment_ban.nil?
-    return unless post_ban.is_a?(Array) || comment_ban.is_a?(Array)
+    return json_response({ errors: error_desc2 }, 401) unless post_ban.nil? && comment_ban.nil?
+    return json_response({ errors: error_desc3 }, 401) unless post_ban.is_a?(Array) && comment_ban.is_a?(Array)
 
     suspend_comms(@user, post_ban, :can_post_date)
     suspend_comms(@user, comment_ban, :can_comment_date)
