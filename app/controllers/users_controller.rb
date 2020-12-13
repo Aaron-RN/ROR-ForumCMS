@@ -59,6 +59,9 @@ class UsersController < ApplicationController
     return unless comms.nil?
     # return unless comms.is_a?(Array)
 
+    puts "#{comms}"
+    puts "#{comms.to_a}"
+    puts "#{comms.class}"
     comms_i = comms.map(&:to_i)
     puts "#{comms_i}"
     ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4]);
