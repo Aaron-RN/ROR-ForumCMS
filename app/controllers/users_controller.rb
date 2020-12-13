@@ -39,6 +39,9 @@ class UsersController < ApplicationController
     post_ban = params[:user][:can_post_date]
     comment_ban = params[:user][:can_comment_date]
 
+    return unless post_ban.nil? || comment_ban.nil?
+    return unless post_ban.is_a?(Array) || comment_ban.is_a?(Array)
+
     suspend_comms(@user, post_ban, :can_post_date)
     suspend_comms(@user, comment_ban, :can_comment_date)
 
@@ -57,9 +60,6 @@ class UsersController < ApplicationController
 
   def suspend_comms(user, comms, attr)
     puts "Suspend_comms Method begin: #{comms}"
-    return unless comms.nil?
-    # return unless comms.is_a?(Array)
-
     puts "#{comms}"
     puts "#{comms.to_a}"
     puts "#{comms.class}"
