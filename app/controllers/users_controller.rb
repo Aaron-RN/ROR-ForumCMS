@@ -56,11 +56,8 @@ class UsersController < ApplicationController
   end
 
   def suspend_comms(user, comms, attr)
-    puts "#{comms}"
     return unless comms.nil?
-    puts "#{comms}"
-    return unless comms.is_a?(Array)
-    puts "#{comms}"
+    # return unless comms.is_a?(Array)
 
     comms_i = comms.map(&:to_i)
     ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4]);
