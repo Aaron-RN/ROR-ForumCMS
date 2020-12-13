@@ -56,6 +56,7 @@ class UsersController < ApplicationController
   end
 
   def suspend_comms(user, comms, attr)
+    puts "Suspend_comms Method begin: #{comms}"
     return unless comms.nil?
     # return unless comms.is_a?(Array)
 
