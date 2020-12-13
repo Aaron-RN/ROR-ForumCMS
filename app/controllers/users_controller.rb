@@ -60,7 +60,9 @@ class UsersController < ApplicationController
     return unless comms.is_a?(Array)
 
     comms_i = comms.map(&:to_i)
-    ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4]);
+    puts comms_i
+    ban_date = DateTime.new(comms_i[0], comms_i[1], comms_i[2], comms_i[3], comms_i[4], 0);
+    puts ban_date
     user.update_attribute(attr, ban_date)
   end
 
