@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     post_ban = params[:user][:can_post_date]
     comment_ban = params[:user][:can_comment_date]
 
-    return json_response({ errors: error_desc2 }, 401) unless post_ban.nil? && comment_ban.nil?
+    return json_response({ errors: error_desc2 }, 401) if post_ban.nil? || comment_ban.nil?
     return json_response({ errors: error_desc3 }, 401) unless post_ban.is_a?(Array) && comment_ban.is_a?(Array)
 
     suspend_comms(@user, post_ban, :can_post_date)
