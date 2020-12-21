@@ -3,8 +3,8 @@
 class SessionsController < ApplicationController
   # When a user logs in
   def create
-    user = User.where(username: params['user']['username'])
-               .or(User.where(email: params['user']['email']))
+    user = User.where(username: params['user']['username'].downcase)
+               .or(User.where(email: params['user']['email'].downcase))
                .first
 
     return json_response({ errors: 'Incorrect login credentials' }, 401) unless user
