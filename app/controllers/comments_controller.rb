@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  before_action :set_post, only: %i[show create update]
+  before_action :set_post, only: %i[show create update destroy]
   before_action :set_comment, only: %i[show update destroy]
 
   def show
@@ -32,7 +32,8 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
-    json_response('Comment destroyed')
+    json_response({ message: 'Comment deleted',
+                    comments: Post.author_comments_json(@post.comments) })
   end
 
   private
