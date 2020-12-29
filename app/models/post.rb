@@ -31,6 +31,17 @@ class Post < ApplicationRecord
     returned_posts
   end
 
+  def self.author_comments_json(comments_array)
+    returned_posts = []
+    comments_array.each do |comment|
+      new_comment = comment.as_json
+      new_comment['author'] = comment.author.username
+      returned_posts.push(new_comment)
+    end
+
+    returned_posts
+  end
+
   def self.pins_json
     results = []
     all_pins = Post.pins

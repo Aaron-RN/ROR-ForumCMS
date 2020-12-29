@@ -4,7 +4,8 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show update destroy lock_post pin_post]
 
   def show
-    json_response({ post: @post.post_json, comments: @post.comments.comment_json })
+    json_response({ post: @post.post_json,
+                    comments: Post.author_comments_json(@post.comments) })
   end
 
   def create
