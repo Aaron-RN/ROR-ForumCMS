@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show set_admin_level suspend_communication]
 
   def index
-    all_users = User.all
+    all_users = User.all.order(created_at: :desc)
     users_array = []
     all_users.each do |user|
       users_array.push(user_with_image(user))
