@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
-  before_action :set_post, only: %i[show create]
+  before_action :set_post, only: %i[show create update]
   before_action :set_comment, only: %i[show update destroy]
 
   def show
@@ -14,7 +14,8 @@ class CommentsController < ApplicationController
 
     comment = @post.comments.build(comment_params)
     if comment.save
-      json_response(comment: comment)
+      json_response({ comment: comment,
+                      comments: Post.author_comments_json(@post.comments) })
     else
       json_response(errors: comment.errors.full_messages)
     end
@@ -22,7 +23,8 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      json_response(comment: @comment)
+      json_response({ comment: @comment,
+                      comments: Post.author_comments_json(@post.comments) })
     else
       json_response(errors: @comment.errors.full_messages)
     end
