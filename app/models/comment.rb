@@ -7,3 +7,9 @@ class Comment < ApplicationRecord
   has_many :comments, dependent: :destroy
   validates :body, length: { in: 2..400 }, presence: true
 end
+
+def comment_json
+  new_comment = attributes
+  new_comment['author'] = author.username
+  new_comment
+end

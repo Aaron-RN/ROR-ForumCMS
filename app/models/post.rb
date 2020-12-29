@@ -9,7 +9,7 @@ class Post < ApplicationRecord
   validates :subforum, length: { in: 3..48 }, allow_nil: true
   scope :pins, -> { where('is_pinned = true') }
   scope :not_pinned, -> { where('is_pinned = false') }
-  
+
   def post_json
     new_post = attributes
     new_post['author'] = author.username
@@ -30,7 +30,7 @@ class Post < ApplicationRecord
 
     returned_posts
   end
-  
+
   def self.pins_json
     results = []
     all_pins = Post.pins
@@ -38,7 +38,7 @@ class Post < ApplicationRecord
       new_post = p.post_json
       results.push(new_post)
     end
-    
+
     results
   end
 end
