@@ -36,6 +36,7 @@ class Post < ApplicationRecord
     comments_array.each do |comment|
       new_comment = comment.as_json
       new_comment['author'] = comment.author.username
+      new_comment['server_date'] = DateTime.now
       returned_comments.push(new_comment)
     end
 
