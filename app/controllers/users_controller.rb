@@ -74,7 +74,7 @@ class UsersController < ApplicationController
                                                  can_comment_date])
     user_with_attachment['profile_image'] = nil
     user_with_attachment['posts'] = Post.author_posts_json(user.posts)
-    user_with_attachment['comments'] = user.comments.last(3)
+    user_with_attachment['comments'] = Comment.author_comments_json(user.comments.last(3))
     user_with_attachment['can_post'] = DateTime.now > user.can_post_date
     user_with_attachment['can_comment'] = DateTime.now > user.can_comment_date
     user_with_attachment['server_date'] = DateTime.now
