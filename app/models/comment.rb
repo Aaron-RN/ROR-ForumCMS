@@ -17,6 +17,7 @@ class Comment < ApplicationRecord
     returned_comments = []
     comments_array.each do |comment|
       new_comment = comment.as_json
+      new_comment['post_author'] = comment.post.author.username
       new_comment['post_title'] = comment.post.title
       new_comment['author'] = comment.author.username
       returned_comments.push(new_comment)
