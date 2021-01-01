@@ -19,13 +19,16 @@ class RegistrationsController < ApplicationController
   end
 
   def activate_account
+    # Set url variable to the front-end url
+    url = 'https://arn-forum-cms.netlify.app/'
     user = User.find(params[:id])
 
     if user.activation_key == params[:activation_key]
       user.update_attribute(:is_activated, true)
     end
 
-    json_response(message: 'Successfully activated account')
+    # json_response(message: 'Successfully activated account')
+    redirect_to url
   end
 
   private
