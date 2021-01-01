@@ -51,7 +51,6 @@ class ForumsController < ApplicationController
   end
 
   def update
-    # update = Forum.update(@forum.id, forum_params)
     if @forum.update(forum_params)
       json_response(forums: Forum.all)
     else
