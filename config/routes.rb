@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       get '/:forum/:subforum', to: 'forums#show_by_subforum'
     end
   end
+  resources :subforums, only: %i[create update destroy]
+
   resources :sign_up, only: %i[create], controller: 'registrations'
   resources :log_in, only: %i[create], controller: 'sessions'
   resources :users, only: %i[index show] do
