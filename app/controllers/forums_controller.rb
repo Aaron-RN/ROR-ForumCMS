@@ -35,10 +35,10 @@ class ForumsController < ApplicationController
     forum = Forum.find_by(name: params[:forum])
     selected_forum = forum.attributes
 
-    subforum = params[:subforum]
+    subforum = Subforum.find_by(name: params[:subforum])
     selected_forum['posts'] = []
-    new_subforum = { subforum: subforum,
-                     posts: forum.subforum_posts(subforum, @per_page, @page) }
+    new_subforum = { subforum: subforum.name,
+                     posts: subforum.subforum_posts(@per_page, @page) }
     selected_forum['subforums'] = [new_subforum]
 
     json_response(results: { forum: selected_forum,
