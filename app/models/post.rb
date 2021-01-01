@@ -13,6 +13,7 @@ class Post < ApplicationRecord
   def post_json
     new_post = attributes
     new_post['author'] = author.username
+    new_post['subforum'] = subforum.name
     new_post['forum'] = forum.name
     new_post
   end
