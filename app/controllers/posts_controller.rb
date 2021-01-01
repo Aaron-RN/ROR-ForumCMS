@@ -56,7 +56,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :subforum, :is_pinned,
+    params.require(:post).permit(:title, :body, :subforum_id, :is_pinned,
                                  :is_locked, :forum_id)
   end
 
