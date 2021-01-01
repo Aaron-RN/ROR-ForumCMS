@@ -4,12 +4,12 @@ class SubforumsController < ApplicationController
 
   def create
     @forum.subforums.create!(subforum_params)
-    json_response(forums: Forum.all)
+    json_response(forums: Forum.forum_all_json)
   end
 
   def update
     if @subforum.update(subforum_params)
-      json_response(forums: Forum.all)
+      json_response(forums: Forum.forum_all_json)
     else
       json_response(errors: @forum.errors.full_messages)
     end
@@ -17,7 +17,7 @@ class SubforumsController < ApplicationController
 
   def destroy
     @subforum.destroy
-    json_response(forums: Forum.all)
+    json_response(forums: Forum.forum_all_json)
   end
 
   private

@@ -18,7 +18,7 @@ class ForumsController < ApplicationController
   end
 
   def index_all
-    json_response(forums: Forum.all)
+    json_response(forums: Forum.forum_all_json)
   end
 
   def show_by_forum
@@ -54,12 +54,12 @@ class ForumsController < ApplicationController
       new_subforums.push(new_hash)
     end
     forum.subforums.create!(new_subforums)
-    json_response(forums: Forum.all)
+    json_response(forums: Forum.forum_all_json)
   end
 
   def update
     if @forum.update(forum_params)
-      json_response(forums: Forum.all)
+      json_response(forums: Forum.forum_all_json)
     else
       json_response(errors: @forum.errors.full_messages)
     end
@@ -67,7 +67,7 @@ class ForumsController < ApplicationController
 
   def destroy
     @forum.destroy
-    json_response(forums: Forum.all)
+    json_response(forums: Forum.forum_all_json)
   end
 
   private

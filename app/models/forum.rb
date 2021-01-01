@@ -31,4 +31,18 @@ class Forum < ApplicationRecord
 
     returned_posts
   end
+
+  private
+
+  def self.forum_all_json
+    returned_json = []
+    Forum.all.each do |forum|
+      new_forum = forum.as_json
+      new_forum['subforums'] = forum.subforums.as_json(only: %i[id name])
+
+      returned_json.push(new_forum)
+    end
+
+    returned_json
+  end
 end
