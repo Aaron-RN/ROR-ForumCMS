@@ -24,8 +24,8 @@ class ForumsController < ApplicationController
   def show_by_forum
     forum = Forum.find_by(name: params[:forum])
     selected_forum = forum.attributes
-    selected_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
-    selected_forum['subforums'] = return_subforums(forum, @per_page, @page)
+    selected_forum['posts'] = forum.subforum_posts(@per_page, @page)
+    selected_forum['subforums'] = return_subforums(@per_page, @page)
 
     json_response(results: { forum: selected_forum,
                              per_page: @per_page, page: @page })
@@ -46,7 +46,14 @@ class ForumsController < ApplicationController
   end
 
   def create
-    Forum.create!(forum_params)
+    forum = Forum.create!(forum_params)
+    all_subforums = params[:forum][:subforums]
+    new_subforums = []
+    all_subforums.each do |sub|
+      new_hash = { name: sub }
+      new_subforums.push(new_hash)
+    end
+    forum.subforums.create!(new_subforums)
     json_response(forums: Forum.all)
   end
 
@@ -78,8 +85,9 @@ class ForumsController < ApplicationController
   def return_subforums(forum, per_page, page)
     all_subforums = []
     forum.subforums.each do |subforum|
-      new_subforum = { subforum: subforum,
-                       posts: forum.subforum_posts(subforum, per_page, page) }
+      new_subforum = { id: subforum.id,
+                       subforum: subforum.name,
+                       posts: subforum.subforum_posts(per_page, page) }
       all_subforums.push(new_subforum)
     end
 
@@ -88,6 +96,6 @@ class ForumsController < ApplicationController
 
   def forum_params
     params.require(:forum)
-          .permit(:name, [subforums: []], :admin_only, :admin_only_view)
+          .permit(:name, :admin_only, :admin_only_view)
   end
 end

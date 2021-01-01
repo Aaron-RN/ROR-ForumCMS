@@ -2,6 +2,7 @@
 
 class Post < ApplicationRecord
   belongs_to :forum
+  belongs_to :subforum
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
   has_many :comments, dependent: :destroy
   validates :title, length: { in: 3..48 }, presence: true
@@ -20,10 +21,11 @@ class Post < ApplicationRecord
   def self.author_posts_json(posts_array)
     returned_posts = []
     posts_array.each do |post|
-      new_post = post.as_json(only: %i[id user_id is_pinned subforum created_at])
+      new_post = post.as_json(only: %i[id user_id is_pinned created_at])
       new_post['title'] = post.title.slice(0..30)
       new_post['body'] = post.body.slice(0..32)
       new_post['author'] = post.author.username
+      new_post['subforum'] = post.subforum.name
       new_post['forum'] = post.forum.name
       returned_posts.push(new_post)
     end

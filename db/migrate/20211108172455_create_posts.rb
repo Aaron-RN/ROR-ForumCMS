@@ -7,7 +7,7 @@ class CreatePosts < ActiveRecord::Migration[6.0]
       t.text :body
       t.references :forum, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
-      t.string :subforum
+      t.references :subforum, null: true, foreign_key: true
       t.boolean :is_pinned, default: false
       t.boolean :is_locked, default: false
 

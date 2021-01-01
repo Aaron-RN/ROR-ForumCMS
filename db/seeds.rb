@@ -53,12 +53,16 @@ user_list.each do |name, password|
 end
 
 forum_list.each do |name, subforums|
-  Forum.create(name: name, subforums: subforums)
+  forum = Forum.create(name: name)
+  subforums.each do |subforum|
+    forum.subforums.create(name: subforum)
+  end
 end
 
 announcements_post_list.each do |title, body, subforum, user_id|
+  subforum_id = Subforum.find_by(name: subforum).id
   User.find(user_id).posts.create(title: title, body: body,
-                                  subforum: subforum, forum_id: 1)
+                                  subforum_id: subforum_id, forum_id: 1)
 end
 
 misc_post_list.each do |title, body|

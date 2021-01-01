@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-#   root 'users#index'
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
   get '/activate_account',
