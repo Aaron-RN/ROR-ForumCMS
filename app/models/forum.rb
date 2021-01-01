@@ -13,7 +13,7 @@ class Forum < ApplicationRecord
     retrieved_posts = posts.where(subforum_id: nil)
                            .offset(offset).limit(per_page)
 
-    truncate_posts(retrieved_posts)
+    Forum.truncate_posts(retrieved_posts)
   end
 
   # Truncates posts title and body attribute returning a new array
