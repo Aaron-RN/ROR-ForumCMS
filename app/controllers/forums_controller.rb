@@ -8,7 +8,7 @@ class ForumsController < ApplicationController
     all_forums = []
     Forum.all.each do |forum|
       new_forum = forum.attributes
-      new_forum['posts'] = forum.subforum_posts(nil, @per_page, @page)
+      new_forum['posts'] = forum.subforum_posts(@per_page, @page)
       new_forum['subforums'] = return_subforums(forum, @per_page, @page)
       all_forums.push new_forum
     end
@@ -25,7 +25,7 @@ class ForumsController < ApplicationController
     forum = Forum.find_by(name: params[:forum])
     selected_forum = forum.attributes
     selected_forum['posts'] = forum.subforum_posts(@per_page, @page)
-    selected_forum['subforums'] = return_subforums(@per_page, @page)
+    selected_forum['subforums'] = return_subforums(forum, @per_page, @page)
 
     json_response(results: { forum: selected_forum,
                              per_page: @per_page, page: @page })
