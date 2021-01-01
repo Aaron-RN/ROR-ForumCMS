@@ -14,7 +14,7 @@ class PostsController < ApplicationController
 
     post = user.posts.build(post_params)
     if post.save
-      json_response(post: @post.post_json)
+      json_response(post: post.post_json)
     else
       json_response(errors: post.errors.full_messages)
     end
