@@ -20,7 +20,7 @@ class RegistrationsController < ApplicationController
 
   def activate_account
     # Set url variable to the front-end url
-    url = 'https://arn-forum-cms.netlify.app/'
+    url = 'https://arn-forum-cms.netlify.app/login'
     user = User.find(params[:id])
 
     if user.activation_key == params[:activation_key]
