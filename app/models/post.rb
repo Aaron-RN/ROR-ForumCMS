@@ -29,6 +29,8 @@ class Post < ApplicationRecord
       new_post['author'] = post.author.username
       new_post['subforum'] = post.subforum.name
       new_post['forum'] = post.forum.name
+      new_post['admin_only'] = post.forum.admin_only
+      new_post['admin_only_view'] = post.forum.admin_only_view
       returned_posts.push(new_post)
     end
 
@@ -40,6 +42,8 @@ class Post < ApplicationRecord
     comments_array.each do |comment|
       new_comment = comment.as_json
       new_comment['author'] = comment.author.username
+      new_comment['admin_only'] = comment.post.forum.admin_only
+      new_comment['admin_only_view'] = comment.post.forum.admin_only_view
       new_comment['server_date'] = DateTime.now
       returned_comments.push(new_comment)
     end
