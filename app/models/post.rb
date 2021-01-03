@@ -15,6 +15,8 @@ class Post < ApplicationRecord
     new_post['author'] = author.username
     new_post['subforum'] = subforum.name
     new_post['forum'] = forum.name
+    new_post['admin_only'] = forum.admin_only
+    new_post['admin_only_view'] = forum.admin_only_view
     new_post
   end
 
