@@ -8,7 +8,8 @@ class UsersController < ApplicationController
     all_users = User.all.order(created_at: :desc)
     users_array = []
     all_users.each do |user|
-      users_array.push(user_with_image(user))
+      new_user = user.as_json(only: %i[id username is_activated])
+      users_array.push(new_user)
     end
 
     json_response(users: users_array)
