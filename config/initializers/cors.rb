@@ -11,22 +11,22 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   # url = Rails.env == 'production' ? 'https://arn-forum-cms.netlify.app' : 'http://localhost:3000'
   url = Rails.env == 'production' ? '*' : 'http://localhost:3000'
-  allowed_methods = %i[get post put patch delete options head]
+  allowed_methods = %i[get options head]
   allow do
     origins url
 
-#     resource '*', headers: :any, methods: allowed_methods, credentials: false
+    resource '*', headers: :any, methods: allowed_methods, credentials: false
     resource '/activate_account', headers: :any, methods: %i[patch]
-    resource '/users', headers: :any, methods: %i[get]
+#     resource '/users/*', headers: :any, methods: %i[get]
     resource '/users/set_admin_level', headers: :any, methods: %i[patch]
     resource '/users/suspend_comms', headers: :any, methods: %i[patch]
     resource '/sign_up', headers: :any, methods: %i[post]
-    resource '/logged_in', headers: :any, methods: %i[get]
+#     resource '/logged_in', headers: :any, methods: %i[get]
     resource '/log_in', headers: :any, methods: %i[post]
     resource '/logout', headers: :any, methods: %i[patch]
     resource '/forums', headers: :any, methods: %i[get post patch delete]
-    resource '/forums/*', headers: :any, methods: %i[get]
-    resource '/forums/*/*', headers: :any, methods: %i[get]
+#     resource '/forums/*', headers: :any, methods: %i[get]
+#     resource '/forums/*/*', headers: :any, methods: %i[get]
     resource '/subforums', headers: :any, methods: %i[post patch delete]
     resource '/posts', headers: :any, methods: %i[get post patch delete]
     resource '/posts/pin_post', headers: :any, methods: %i[patch]
