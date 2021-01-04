@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
                .first
 
     return json_response({ errors: 'Incorrect login credentials' }, 401) unless user
-    return unless activated(user)
 
     authenticate_user(user)
   end
@@ -48,6 +47,8 @@ class SessionsController < ApplicationController
 
   def authenticate_user(user)
     if user.try(:authenticate, params['user']['password'])
+      return unless activated(user)
+      
       new_token = generate_token(user.id)
       if user.update_attribute(:token, new_token)
         json_response(user: user_status(user))
