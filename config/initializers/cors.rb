@@ -16,7 +16,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins url
 
     resource '*', headers: :any, methods: allowed_methods, credentials: false
-    resource '/activate_account', headers: :any, methods: %i[patch]
+    resource '/activate_account', headers: :any, methods: %i[get]
 #     resource '/users/*', headers: :any, methods: %i[get]
     resource '/users/set_admin_level', headers: :any, methods: %i[patch]
     resource '/users/suspend_comms', headers: :any, methods: %i[patch]
