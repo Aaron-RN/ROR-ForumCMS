@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
-  patch '/activate_account',
+  get '/activate_account',
       to: 'registrations#activate_account',
       as: 'activate_account'
 
