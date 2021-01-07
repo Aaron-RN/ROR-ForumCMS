@@ -15,6 +15,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins url
 
+    resource '*', headers: :any, methods: allowed_methods, credentials: false
     resource '/activate_account', headers: :any, methods: %i[get]
     resource '/users/update_image', headers: :any, methods: %i[patch]
     resource '/users/set_admin_level', headers: :any, methods: %i[patch]
@@ -34,6 +35,5 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '/posts/lock_post', headers: :any, methods: %i[patch]
     resource '/comments', headers: :any, methods: %i[get post]
     resource '/comments/*', headers: :any, methods: %i[get patch delete]
-    resource '*', headers: :any, methods: allowed_methods, credentials: false
   end
 end
