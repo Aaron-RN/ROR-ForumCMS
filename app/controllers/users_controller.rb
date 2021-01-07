@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :set_admin, only: %i[set_admin_level suspend_communication]
-  before_action :set_user, only: %i[show set_admin_level suspend_communication]
+  before_action :set_user, only: %i[show update_image set_admin_level suspend_communication]
 
   def index
     all_users = User.all.order(created_at: :desc)
@@ -17,6 +17,10 @@ class UsersController < ApplicationController
 
   def show
     json_response(user: user_with_image(@user))
+  end
+  
+  def update_image
+    @user.update_attribute(:profile_image, params[:user][:profile_image])
   end
 
   # Change a user's administrative level
