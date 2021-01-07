@@ -20,7 +20,10 @@ class UsersController < ApplicationController
   end
   
   def update_image
-    @user.update_attribute(:profile_image, params[:user][:profile_image])
+    if @user.update_attribute(:profile_image, params[:user][:profile_image])
+      json_response(user: user_with_image(@user))
+    else
+      json_response({ errors: @user.errors.full_messages }, 401 )
   end
 
   # Change a user's administrative level
