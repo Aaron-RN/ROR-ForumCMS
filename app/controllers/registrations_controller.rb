@@ -12,6 +12,23 @@ class RegistrationsController < ApplicationController
                   :created)
   end
 
+  def change_password
+    json_response(user: { logged_in: false }) if params['token'].blank?
+
+    user = User.where(token: params['token']).first
+    if user
+      if user.try(:authenticate, params['user']['old_password'])
+        if user.update(password_params)
+          json_response({ message: 'Password changed successfully' })
+        else
+          json_response({ errors: user.errors.full_messages })
+        end
+      else
+        json_response({ errors: 'Incorrect password' }, 401)
+      end
+    end
+  end
+
   def destroy
     user = User.find(params[:id])
     user.destroy
@@ -37,5 +54,11 @@ class RegistrationsController < ApplicationController
     # whitelist params
     params.require(:user)
           .permit(:username, :email, :password, :password_confirmation)
+  end
+
+  def password_params
+    # whitelist params
+    params.require(:user)
+          .permit(:password, :password_confirmation)
   end
 end
