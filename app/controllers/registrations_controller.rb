@@ -13,11 +13,11 @@ class RegistrationsController < ApplicationController
   end
 
   def change_password
-    json_response(user: { logged_in: false }) if params['user']['token'].blank?
+    json_response(user: { logged_in: false }) if params[:user][:token].blank?
 
-    user = User.where(token: params['user']['token']).first
+    user = User.where(token: params[:user][:token]).first
     if user
-      if user.try(:authenticate, params['user']['old_password'])
+      if user.try(:authenticate, params[:user][:old_password])
         if user.update(password_params)
           json_response({ message: 'Password changed successfully' })
         else
