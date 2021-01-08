@@ -9,6 +9,10 @@ class UsersController < ApplicationController
     users_array = []
     all_users.each do |user|
       new_user = user.as_json(only: %i[id username is_activated])
+      new_user['profile_image'] = nil
+      unless user.profile_image_attachment.nil?
+        new_user['profile_image'] = url_for(user.profile_image)
+      end
       users_array.push(new_user)
     end
 
