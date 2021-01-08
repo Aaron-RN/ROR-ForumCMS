@@ -3,8 +3,8 @@
 class SessionsController < ApplicationController
   # When a user logs in
   def create
-    user = User.where(username: params['user']['username'].downcase)
-               .or(User.where(email: params['user']['email'].downcase))
+    user = User.where(username: params[:user][:username].downcase)
+               .or(User.where(email: params[:user][:email].downcase))
                .first
 
     return json_response({ errors: 'Incorrect login credentials' }, 401) unless user
@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
 
   # When a user logs out
   def destroy
-    user = User.where(token: params['user']['token']).first
+    user = User.where(token: params[:user][:token]).first
     return unless user
 
     user.update(token: nil)
@@ -23,9 +23,9 @@ class SessionsController < ApplicationController
 
   # Checks if a user is still logged in
   def logged_in
-    json_response(user: { logged_in: false }) if params['token'].blank?
+    json_response(user: { logged_in: false }) if params[:token].blank?
 
-    user = User.where(token: params['token']).first
+    user = User.where(token: params[:token]).first
     if user
       json_response(user: user_status(user))
     else json_response(user: { logged_in: false })
@@ -46,7 +46,7 @@ class SessionsController < ApplicationController
   end
 
   def authenticate_user(user)
-    if user.try(:authenticate, params['user']['password'])
+    if user.try(:authenticate, params[:user][:password])
       return unless activated(user)
       
       new_token = generate_token(user.id)
