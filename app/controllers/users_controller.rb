@@ -24,6 +24,7 @@ class UsersController < ApplicationController
       json_response(user: user_with_image(@user))
     else
       json_response({ errors: @user.errors.full_messages }, 401 )
+    end
   end
 
   # Change a user's administrative level
