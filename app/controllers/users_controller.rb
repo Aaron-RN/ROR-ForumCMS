@@ -8,7 +8,9 @@ class UsersController < ApplicationController
     all_users = User.all.order(created_at: :desc)
     users_array = []
     all_users.each do |user|
-      new_user = user.as_json(only: %i[id username is_activated])
+      new_user = user.as_json(only: %i[id username is_activated admin_level])
+      new_user['can_post'] = DateTime.now > user.can_post_date
+      new_user['can_comment'] = DateTime.now > user.can_comment_date
       new_user['profile_image'] = nil
       unless user.profile_image_attachment.nil?
         new_user['profile_image'] = url_for(user.profile_image)
