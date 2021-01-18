@@ -86,9 +86,10 @@ ActiveRecord::Schema.define(version: 2021_11_08_184028) do
     t.boolean "is_activated", default: false
     t.string "activation_key"
     t.string "token"
+    t.datetime "token_date"
     t.integer "admin_level", default: 0
-    t.datetime "can_post_date", default: "2021-01-08 00:49:28"
-    t.datetime "can_comment_date", default: "2021-01-08 00:49:28"
+    t.datetime "can_post_date", default: "2021-01-18 15:19:57"
+    t.datetime "can_comment_date", default: "2021-01-18 15:19:57"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

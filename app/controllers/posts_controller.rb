@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
+  before_action :authorized_user?, except: %i[show lock_post pin_post]
+  before_action :authorized_admin?, only: %i[lock_post pin_post]
   before_action :set_post, only: %i[show update destroy lock_post pin_post]
 
   def show
@@ -9,10 +11,9 @@ class PostsController < ApplicationController
   end
 
   def create
-    user = User.find(params[:post][:user_id])
-    return if suspended(user.can_post_date)
+    return if suspended(@current_user.can_post_date)
 
-    post = user.posts.build(post_params)
+    post = @current_user.posts.build(post_params)
     if post.save
       json_response(post: post.post_json)
     else
@@ -21,6 +22,11 @@ class PostsController < ApplicationController
   end
 
   def update
+    # Only allow the owner of the post or an administrator to update the post
+    unless @post.author == @current_user || @current_user.admin_level >= 1
+      return head(401)
+    end
+
     if @post.update(post_params)
       json_response(post: @post.post_json)
     else
@@ -29,6 +35,11 @@ class PostsController < ApplicationController
   end
 
   def destroy
+    # Only allow the owner of the post or an administrator to destroy the post
+    unless @post.author == @current_user || @current_user.admin_level >= 1
+      return head(401)
+    end
+
     @post.destroy
     json_response('Post destroyed')
   end

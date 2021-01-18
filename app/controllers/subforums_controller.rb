@@ -1,4 +1,5 @@
 class SubforumsController < ApplicationController
+  before_action :authorized_admin?, only: %i[create update destroy]
   before_action :set_forum, only: %i[create]
   before_action :set_subforum, only: %i[update destroy]
 

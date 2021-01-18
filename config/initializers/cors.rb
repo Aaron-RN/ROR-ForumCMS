@@ -34,6 +34,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '/posts/lock_post', headers: :any, methods: %i[patch]
     resource '/comments', headers: :any, methods: %i[post]
     resource '/comments/*', headers: :any, methods: %i[get patch delete]
+
     resource '*', headers: :any, methods: allowed_methods, credentials: false
   end
 end

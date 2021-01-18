@@ -32,8 +32,6 @@ class Forum < ApplicationRecord
     returned_posts
   end
 
-  private
-
   def self.forum_all_json
     returned_json = []
     Forum.all.each do |forum|

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  # When a user logs in
+  before_action :authorized_user?, only: :logged_in
+
+  # When a user attempts to log in
   def create
     user = User.where(username: params[:user][:username].downcase)
                .or(User.where(email: params[:user][:email].downcase))
@@ -23,13 +25,15 @@ class SessionsController < ApplicationController
 
   # Checks if a user is still logged in
   def logged_in
-    json_response(user: { logged_in: false }) if params[:token].blank?
+    json_response(user: user_status(@current_user))
 
-    user = User.where(token: params[:token]).first
-    if user
-      json_response(user: user_status(user))
-    else json_response(user: { logged_in: false })
-    end
+    # json_response(user: { logged_in: false }) if params[:token].blank?
+
+    # user = User.where(token: params[:token]).first
+    # if @current_user
+    #   json_response(user: user_status(@current_user))
+    # else json_response(user: { logged_in: false })
+    # end
   end
 
   private
@@ -48,7 +52,7 @@ class SessionsController < ApplicationController
   def authenticate_user(user)
     if user.try(:authenticate, params[:user][:password])
       return unless activated(user)
-      
+
       new_token = generate_token(user.id)
       if user.update_attribute(:token, new_token)
         json_response(user: user_status(user))

@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def show
     json_response(user: user_with_image(@user))
   end
-  
+
   def update_image
     if @user.update_attribute(:profile_image, params[:user][:profile_image])
       json_response(user: user_with_image(@user))

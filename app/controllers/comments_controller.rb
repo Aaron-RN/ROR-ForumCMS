@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
+  before_action :authorized_user?, except: %i[show]
   before_action :set_post, only: %i[show create update destroy]
   before_action :set_comment, only: %i[show update destroy]
 
@@ -9,8 +10,8 @@ class CommentsController < ApplicationController
   end
 
   def create
-    user = User.find(params[:comment][:user_id])
-    return if suspended(user.can_comment_date)
+    # user = User.find(params[:comment][:user_id])
+    return if suspended(@current_user.can_comment_date)
 
     comment = @post.comments.build(comment_params)
     if comment.save
@@ -22,6 +23,11 @@ class CommentsController < ApplicationController
   end
 
   def update
+    # Only allow the owner of the comment or an administrator to update the comment
+    unless @comment.author == @current_user || @current_user.admin_level >= 1
+      return head(401)
+    end
+
     if @comment.update(comment_params)
       json_response({ comment: @comment,
                       comments: Post.author_comments_json(@post.comments) })
@@ -31,6 +37,11 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    # Only allow the owner of the comment or an administrator to destroy the comment
+    unless @comment.author == @current_user || @current_user.admin_level >= 1
+      return head(401)
+    end
+
     @comment.destroy
     json_response({ message: 'Comment deleted',
                     comments: Post.author_comments_json(@post.comments) })

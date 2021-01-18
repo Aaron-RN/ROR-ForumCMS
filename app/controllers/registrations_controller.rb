@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RegistrationsController < ApplicationController
+  before_action :authorized_user?, only: %i[change_password destroy]
+
   def create
     user = User.create!(register_params)
     new_activation_key = generate_token(user.id, 62)
@@ -13,26 +15,26 @@ class RegistrationsController < ApplicationController
   end
 
   def change_password
-    json_response(user: { logged_in: false }) if params[:user][:token].blank?
-
-    user = User.where(token: params[:user][:token]).first
-    if user
-      if user.try(:authenticate, params[:user][:old_password])
-        if user.update(password_params)
-          json_response({ message: 'Password changed successfully' })
-        else
-          json_response({ errors: user.errors.full_messages })
-        end
+    if @current_user.try(:authenticate, params[:user][:old_password])
+      if @current_user.update(password_params)
+        json_response({ message: 'Password changed successfully' })
       else
-        json_response({ errors: 'Incorrect password' }, 401)
+        json_response({ errors: @current_user.errors.full_messages })
       end
+    else
+      json_response({ errors: 'Incorrect password' }, 401)
     end
   end
 
   def destroy
     user = User.find(params[:id])
+    # Only allow the owner of the account or an administrator to destroy the account
+    unless user == @current_user || @current_user.admin_level >= 1
+      return head(401)
+    end
+
     user.destroy
-    head :no_content
+    json_response({ message: 'Account deactivated' })
   end
 
   def activate_account
