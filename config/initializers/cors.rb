@@ -24,16 +24,16 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 #     resource '/logged_in', headers: :any, methods: %i[get]
     resource '/log_in', headers: :any, methods: %i[post]
     resource '/logout', headers: :any, methods: %i[patch]
-    resource '/forums', headers: :any, methods: %i[post]
-    resource '/forums/*', headers: :any, methods: %i[patch delete]
-    resource '/subforums', headers: :any, methods: %i[post]
-    resource '/subforums/*', headers: :any, methods: %i[patch delete]
+    resource '/forums', headers: :any, methods: %i[get post]
+    resource '/forums/*', headers: :any, methods: %i[get patch delete]
+    resource '/subforums', headers: :any, methods: %i[get post]
+    resource '/subforums/*', headers: :any, methods: %i[get patch delete]
     resource '/posts', headers: :any, methods: %i[post]
-    resource '/posts/*', headers: :any, methods: %i[patch delete]
+    resource '/posts/*', headers: :any, methods: %i[get patch delete]
     resource '/posts/pin_post', headers: :any, methods: %i[patch]
     resource '/posts/lock_post', headers: :any, methods: %i[patch]
     resource '/comments', headers: :any, methods: %i[post]
-    resource '/comments/*', headers: :any, methods: %i[patch delete]
+    resource '/comments/*', headers: :any, methods: %i[get patch delete]
     resource '*', headers: :any, methods: allowed_methods, credentials: false
   end
 end
