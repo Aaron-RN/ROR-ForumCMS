@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
       json_response({ comment: comment,
                       comments: Post.author_comments_json(@post.comments) })
     else
-      json_response(errors: comment.errors.full_messages)
+      json_response(errors: comment.errors.full_messages, 401)
     end
   end
 
@@ -32,7 +32,7 @@ class CommentsController < ApplicationController
       json_response({ comment: @comment,
                       comments: Post.author_comments_json(@post.comments) })
     else
-      json_response(errors: @comment.errors.full_messages)
+      json_response(errors: @comment.errors.full_messages, 401)
     end
   end
 
