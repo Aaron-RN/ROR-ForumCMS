@@ -58,7 +58,7 @@ class SessionsController < ApplicationController
         user.update_attribute(:token_date, DateTime.now)
         json_response(user: user_status(user))
       else
-        json_response({ errors: user.errors.full_messages })
+        json_response({ errors: user.errors.full_messages }, 401)
       end
     else
       json_response({ errors: 'Incorrect login credentials' }, 401)
