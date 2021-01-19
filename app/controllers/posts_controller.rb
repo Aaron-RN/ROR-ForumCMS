@@ -24,7 +24,7 @@ class PostsController < ApplicationController
   def update
     # Only allow the owner of the post or an administrator to update the post
     unless @post.author == @current_user || @current_user.admin_level >= 1
-      return head(401)
+      return json_response({ errors: 'Account not Authorized' }, 401)
     end
 
     if @post.update(post_params)
@@ -37,7 +37,7 @@ class PostsController < ApplicationController
   def destroy
     # Only allow the owner of the post or an administrator to destroy the post
     unless @post.author == @current_user || @current_user.admin_level >= 1
-      return head(401)
+      return json_response({ errors: 'Account not Authorized' }, 401)
     end
 
     @post.destroy
