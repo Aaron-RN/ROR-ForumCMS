@@ -88,8 +88,8 @@ ActiveRecord::Schema.define(version: 2021_11_08_184028) do
     t.string "token"
     t.datetime "token_date"
     t.integer "admin_level", default: 0
-    t.datetime "can_post_date", default: "2021-01-18 15:19:57"
-    t.datetime "can_comment_date", default: "2021-01-18 15:19:57"
+    t.datetime "can_post_date", default: "2021-01-19 18:38:51"
+    t.datetime "can_comment_date", default: "2021-01-19 18:38:51"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -99,7 +99,6 @@ ActiveRecord::Schema.define(version: 2021_11_08_184028) do
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "posts", "forums"
-  add_foreign_key "posts", "subforums"
   add_foreign_key "posts", "users"
   add_foreign_key "subforums", "forums"
 end
