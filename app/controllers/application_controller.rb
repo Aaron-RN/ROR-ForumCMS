@@ -9,13 +9,13 @@ class ApplicationController < ActionController::API
 
   # Determine if user is authenticated
   def authorized_user?
-    head(401) unless current_user
+    json_response({ errors: 'Account not Authorized' }, 401) unless current_user
   end
 
   # Determine if user is authenticated administrator
   def authorized_admin?
     authorized_user?
-    head(401) unless @current_user.admin_level.positive?
+    json_response({ errors: 'Insufficient Administrative Rights' }, 401) unless @current_user.admin_level.positive?
   end
 
   private
