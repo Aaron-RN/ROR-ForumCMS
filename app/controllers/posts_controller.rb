@@ -17,7 +17,7 @@ class PostsController < ApplicationController
     if post.save
       json_response(post: post.post_json)
     else
-      json_response(errors: post.errors.full_messages, 401)
+      json_response({ errors: post.errors.full_messages }, 401)
     end
   end
 
@@ -30,7 +30,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       json_response(post: @post.post_json)
     else
-      json_response(errors: @post.errors.full_messages, 401)
+      json_response({ errors: @post.errors.full_messages }, 401)
     end
   end
 
@@ -48,7 +48,7 @@ class PostsController < ApplicationController
     if @post.update(is_locked: !@post.is_locked)
       json_response(post: @post.post_json)
     else
-      json_response(errors: @post.errors.full_messages, 401)
+      json_response({ errors: @post.errors.full_messages }, 401)
     end
   end
 
@@ -56,7 +56,7 @@ class PostsController < ApplicationController
     if @post.update(is_pinned: !@post.is_pinned)
       json_response(post: @post.post_json)
     else
-      json_response(errors: @post.errors.full_messages, 401)
+      json_response({ errors: @post.errors.full_messages }, 401)
     end
   end
 

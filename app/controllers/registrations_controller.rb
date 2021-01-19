@@ -19,7 +19,7 @@ class RegistrationsController < ApplicationController
       if @current_user.update(password_params)
         json_response({ message: 'Password changed successfully' })
       else
-        json_response({ errors: @current_user.errors.full_messages })
+        json_response({ errors: @current_user.errors.full_messages }, 401)
       end
     else
       json_response({ errors: 'Incorrect password' }, 401)

@@ -62,7 +62,7 @@ class ForumsController < ApplicationController
     if @forum.update(forum_params)
       json_response(forums: Forum.forum_all_json)
     else
-      json_response(errors: @forum.errors.full_messages)
+      json_response({ errors: @forum.errors.full_messages }, 401)
     end
   end
 
