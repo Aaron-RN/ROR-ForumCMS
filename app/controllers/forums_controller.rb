@@ -38,7 +38,8 @@ class ForumsController < ApplicationController
 
     subforum = Subforum.find_by(name: params[:subforum])
     selected_forum['posts'] = []
-    new_subforum = { subforum: subforum.name,
+    new_subforum = { id: subforum.id,
+                     subforum: subforum.name,
                      posts: subforum.subforum_posts(@per_page, @page) }
     selected_forum['subforums'] = [new_subforum]
 
