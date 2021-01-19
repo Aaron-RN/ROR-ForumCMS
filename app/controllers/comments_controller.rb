@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
   def update
     # Only allow the owner of the comment or an administrator to update the comment
     unless @comment.author == @current_user || @current_user.admin_level >= 1
-      return head(401)
+      return json_response({ errors: 'Account not Authorized' }, 401)
     end
 
     if @comment.update(comment_params)
@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
   def destroy
     # Only allow the owner of the comment or an administrator to destroy the comment
     unless @comment.author == @current_user || @current_user.admin_level >= 1
-      return head(401)
+      return json_response({ errors: 'Account not Authorized' }, 401)
     end
 
     @comment.destroy
