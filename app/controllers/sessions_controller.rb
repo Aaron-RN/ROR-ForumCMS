@@ -55,6 +55,7 @@ class SessionsController < ApplicationController
 
       new_token = generate_token(user.id)
       if user.update_attribute(:token, new_token)
+        user.update_attribute(:token_date, DateTime.now)
         json_response(user: user_status(user))
       else
         json_response({ errors: user.errors.full_messages })
