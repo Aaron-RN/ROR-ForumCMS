@@ -2,7 +2,7 @@
 
 class Post < ApplicationRecord
   belongs_to :forum
-  belongs_to :subforum
+  belongs_to :subforum, optional: true
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
   has_many :comments, dependent: :destroy
   validates :title, length: { in: 3..48 }, presence: true
