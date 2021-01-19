@@ -13,7 +13,7 @@ class Post < ApplicationRecord
   def post_json
     new_post = attributes
     new_post['author'] = author.username
-    new_post['subforum'] = subforum.name
+    new_post['subforum'] = subforum.name if subforum.present?
     new_post['forum'] = forum.name
     new_post['admin_only'] = forum.admin_only
     new_post['admin_only_view'] = forum.admin_only_view
@@ -27,7 +27,7 @@ class Post < ApplicationRecord
       new_post['title'] = post.title.slice(0..30)
       new_post['body'] = post.body.slice(0..32)
       new_post['author'] = post.author.username
-      new_post['subforum'] = post.subforum.name
+      new_post['subforum'] = post.subforum.name if subforum.present?
       new_post['forum'] = post.forum.name
       new_post['admin_only'] = post.forum.admin_only
       new_post['admin_only_view'] = post.forum.admin_only_view

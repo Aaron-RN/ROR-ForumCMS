@@ -20,7 +20,7 @@ class Comment < ApplicationRecord
       new_comment['post_author'] = comment.post.author.username
       new_comment['post_title'] = comment.post.title
       new_comment['forum'] = comment.post.forum.name
-      new_comment['subforum'] = comment.post.subforum
+      new_comment['subforum'] = comment.post.subforum if post.subforum.present?
       new_comment['author'] = comment.author.username
       returned_comments.push(new_comment)
     end

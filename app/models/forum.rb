@@ -24,7 +24,7 @@ class Forum < ApplicationRecord
       new_post['title'] = post.title.slice(0..30)
       new_post['body'] = post.body.slice(0..32)
       new_post['author'] = post.author.username
-      new_post['subforum'] = post.subforum.name
+      new_post['subforum'] = post.subforum.name if subforum.present?
       new_post['forum'] = post.forum.name
       returned_posts.push(new_post)
     end
