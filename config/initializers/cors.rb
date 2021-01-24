@@ -20,6 +20,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '/users/*/set_admin_level', headers: :any, methods: %i[patch]
     resource '/users/*/suspend_comms', headers: :any, methods: %i[patch]
     resource '/change_password', headers: :any, methods: %i[patch]
+    resource '/change_password_with_token', headers: :any, methods: %i[patch]
     resource '/sign_up', headers: :any, methods: %i[post]
 #     resource '/logged_in', headers: :any, methods: %i[get]
     resource '/log_in', headers: :any, methods: %i[post]
