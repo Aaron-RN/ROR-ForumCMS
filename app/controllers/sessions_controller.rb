@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  before_action :authorized_user?, only: :logged_in
+  before_action :authorized_user?, except: :create
 
   # When a user attempts to log in
   def create
@@ -16,10 +16,7 @@ class SessionsController < ApplicationController
 
   # When a user logs out
   def destroy
-    user = User.where(token: params[:user][:token]).first
-    return unless user
-
-    user.update(token: nil)
+    @current_user.update(token: nil)
     json_response(user: { logged_in: false })
   end
 
