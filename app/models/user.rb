@@ -16,4 +16,9 @@ class User < ApplicationRecord
   has_one_attached :profile_image
   before_save { username.downcase! }
   before_save { email.downcase! }
+
+  def password_token_expired?
+    offset = (Time.zone.now - password_reset_date).round
+    offset / 1.hours >= 1 # Token expires after 1 hour
+  end
 end

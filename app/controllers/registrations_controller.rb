@@ -27,13 +27,16 @@ class RegistrationsController < ApplicationController
       json_response({ errors: 'Incorrect password' }, 401)
     end
   end
-  
+
   # Change a user's password if they have a password reset token
   def change_password_with_token
     user = User.find_by(password_reset_token: params[:password_reset_token])
     if user.present?
-      # Check if token is still valid       
+      # Check if token is still valid
+      return json_response({ message: 'Token expired' }, 400) if user.password_token_expired?
+
       if user.update(password_params)
+        user.update_attribute(:password_reset_token, nil)
         json_response({ message: 'Password changed successfully' })
       else
         json_response({ errors: user.errors.full_messages }, 400)
@@ -42,7 +45,7 @@ class RegistrationsController < ApplicationController
       json_response({ errors: 'Invalid Token' }, 401)
     end
   end
-  
+
   # Generate password reset token and send to account's associated email
   def forgot_password
     user = User.find_by(email: params[:email])
@@ -55,7 +58,7 @@ class RegistrationsController < ApplicationController
         json_response({ errors: user.errors.full_messages }, 401)
       end
     end
-    json_response(message: 'Password reset information sent to associated account.')
+    json_response({ message: 'Password reset information sent to associated account.' })
   end
 
   def destroy
@@ -82,18 +85,13 @@ class RegistrationsController < ApplicationController
     # json_response(message: 'Successfully activated account')
     redirect_to url
   end
-  
+
   # Link used in account password reset email
   def password_reset_account
     # Set url variable to the front-end url
-    url = 'https://arn-forum-cms.netlify.app/login'
-    user = User.find(params[:id])
+    reset_token = params[:password_reset_token]
+    url = "https://arn-forum-cms.netlify.app/reset_password?token=#{reset_token}"
 
-    if user.password_reset_token == params[:password_reset_token]
-      user.update_attribute(:password_reset_token, nil)
-    end
-
-    # json_response(message: 'Successfully activated account')
     redirect_to url
   end
 

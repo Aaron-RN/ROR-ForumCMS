@@ -3,7 +3,6 @@
 class UsersController < ApplicationController
   before_action :authorized_user?, only: %i[update_image]
   before_action :authorized_admin?, only: %i[suspend_communication set_admin_level]
-  # before_action :set_admin, only: %i[set_admin_level suspend_communication]
   before_action :set_user, only: %i[show update_image set_admin_level suspend_communication]
 
   def index
@@ -68,10 +67,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-#   def set_admin
-#     @admin = User.find(params[:user][:admin_id])
-#   end
 
   def set_user
     @user = User.find(params[:id])

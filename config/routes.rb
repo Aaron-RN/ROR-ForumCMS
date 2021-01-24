@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  patch :forgot_password, to: 'registrations#forgot_password'
   patch :change_password, to: 'registrations#change_password'
   patch :change_password_with_token, to: 'registrations#change_password_with_token'
   patch :logout, to: 'sessions#destroy'
