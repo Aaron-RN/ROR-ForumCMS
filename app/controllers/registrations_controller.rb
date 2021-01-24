@@ -21,10 +21,25 @@ class RegistrationsController < ApplicationController
       if @current_user.update(password_params)
         json_response({ message: 'Password changed successfully' })
       else
-        json_response({ errors: @current_user.errors.full_messages }, 401)
+        json_response({ errors: @current_user.errors.full_messages }, 400)
       end
     else
       json_response({ errors: 'Incorrect password' }, 401)
+    end
+  end
+  
+  # Change a user's password if they have a password reset token
+  def change_password_with_token
+    user = User.find_by(password_reset_token: params[:password_reset_token])
+    if user.present?
+      # Check if token is still valid       
+      if user.update(password_params)
+        json_response({ message: 'Password changed successfully' })
+      else
+        json_response({ errors: user.errors.full_messages }, 400)
+      end
+    else
+      json_response({ errors: 'Invalid Token' }, 401)
     end
   end
   
