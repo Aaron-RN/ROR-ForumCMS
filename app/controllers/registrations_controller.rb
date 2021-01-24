@@ -3,6 +3,7 @@
 class RegistrationsController < ApplicationController
   before_action :authorized_user?, only: %i[change_password destroy]
 
+  # Register a new user account
   def create
     user = User.create!(register_params)
     new_activation_key = generate_token(user.id, 62)
@@ -14,6 +15,7 @@ class RegistrationsController < ApplicationController
                   :created)
   end
 
+  # Change a user's password if the password is known
   def change_password
     if @current_user.try(:authenticate, params[:user][:old_password])
       if @current_user.update(password_params)
@@ -24,6 +26,21 @@ class RegistrationsController < ApplicationController
     else
       json_response({ errors: 'Incorrect password' }, 401)
     end
+  end
+  
+  # Generate password reset token and send to account's associated email
+  def forgot_password
+    user = User.find_by(email: params[:email])
+    if user.present?
+      new_token = generate_token(user.id)
+      if user.update_attribute(:password_reset_token, new_token)
+        user.update_attribute(:password_reset_date, DateTime.now)
+        ActivationMailer.with(user: user).password_reset_email.deliver_now
+      else
+        json_response({ errors: user.errors.full_messages }, 401)
+      end
+    end
+    json_response(message: 'Password reset information sent to associated account.')
   end
 
   def destroy
@@ -37,6 +54,7 @@ class RegistrationsController < ApplicationController
     json_response({ message: 'Account deactivated' })
   end
 
+  # Link used in account activation email
   def activate_account
     # Set url variable to the front-end url
     url = 'https://arn-forum-cms.netlify.app/login'
@@ -44,6 +62,20 @@ class RegistrationsController < ApplicationController
 
     if user.activation_key == params[:activation_key]
       user.update_attribute(:is_activated, true)
+    end
+
+    # json_response(message: 'Successfully activated account')
+    redirect_to url
+  end
+  
+  # Link used in account password reset email
+  def password_reset_account
+    # Set url variable to the front-end url
+    url = 'https://arn-forum-cms.netlify.app/login'
+    user = User.find(params[:id])
+
+    if user.password_reset_token == params[:password_reset_token]
+      user.update_attribute(:password_reset_token, nil)
     end
 
     # json_response(message: 'Successfully activated account')
