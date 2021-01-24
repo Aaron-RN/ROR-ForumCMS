@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get '/activate_account',
       to: 'registrations#activate_account',
       as: 'activate_account'
+  get '/password_reset_account',
+      to: 'registrations#password_reset_account',
+      as: 'password_reset_account'
 
   resources :comments, only: %i[show create update destroy]
   resources :posts, only: %i[show create update destroy] do
