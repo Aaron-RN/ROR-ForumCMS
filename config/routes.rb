@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   patch :change_password, to: 'registrations#change_password'
+  patch :change_password_with_token, to: 'registrations#change_password_with_token'
   patch :logout, to: 'sessions#destroy'
   get :logged_in, to: 'sessions#logged_in'
   get '/activate_account',
