@@ -50,7 +50,7 @@ class RegistrationsController < ApplicationController
   def forgot_password
     user = User.find_by(email: params[:email])
     if user.present?
-      new_token = generate_token(user.id)
+      new_token = generate_token(user.id, 32, true)
       if user.update_attribute(:password_reset_token, new_token)
         user.update_attribute(:password_reset_date, DateTime.now)
         ActivationMailer.with(user: user).password_reset_email.deliver_now
